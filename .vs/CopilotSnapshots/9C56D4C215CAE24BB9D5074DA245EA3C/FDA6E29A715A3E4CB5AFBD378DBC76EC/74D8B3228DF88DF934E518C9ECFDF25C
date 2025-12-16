@@ -1,0 +1,149 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using QUANLYCOFFEESHOP.DTO;
+
+namespace QUANLYCOFFEESHOP.DAL
+{
+    public class TaiKhoanDAL
+    {
+        public TaiKhoanDTO CheckLogin(string taiKhoan, string matKhau)
+        {
+            try
+            {
+                string query = "SELECT * FROM TaiKhoan WHERE TaiKhoan = @TaiKhoan AND MatKhau = @MatKhau";
+                SqlParameter[] parameters = {
+                    new SqlParameter("@TaiKhoan", taiKhoan),
+                    new SqlParameter("@MatKhau", matKhau)
+                };
+
+                DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
+
+                if (dt.Rows.Count > 0)
+                {
+                    DataRow row = dt.Rows[0];
+                    return new TaiKhoanDTO
+                    {
+                        TaiKhoan = row["TaiKhoan"].ToString(),
+                        MatKhau = row["MatKhau"].ToString(),
+                        Quyen = Convert.ToInt32(row["Quyen"]),
+                        MaNV = row["MaNV"].ToString()
+                    };
+                }
+
+                return null;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public List<TaiKhoanDTO> GetAll()
+        {
+            List<TaiKhoanDTO> list = new List<TaiKhoanDTO>();
+
+            string query = "SELECT * FROM TaiKhoan";
+            DataTable dt = DatabaseHelper.ExecuteQuery(query);
+
+            foreach (DataRow row in dt.Rows)
+            {
+                TaiKhoanDTO tk = new TaiKhoanDTO
+                {
+                    TaiKhoan = row["TaiKhoan"].ToString(),
+                    MatKhau = row["MatKhau"].ToString(),
+                    Quyen = Convert.ToInt32(row["Quyen"]),
+                    MaNV = row["MaNV"].ToString()
+                };
+                list.Add(tk);
+            }
+
+            return list;
+        }
+
+        public bool Insert(TaiKhoanDTO taiKhoan)
+        {
+            try
+            {
+                string query = "INSERT INTO TaiKhoan (TaiKhoan, MatKhau, Quyen, MaNV) " +
+                              "VALUES (@TaiKhoan, @MatKhau, @Quyen, @MaNV)";
+
+                SqlParameter[] parameters = {
+                    new SqlParameter("@TaiKhoan", taiKhoan.TaiKhoan),
+                    new SqlParameter("@MatKhau", taiKhoan.MatKhau),
+                    new SqlParameter("@Quyen", taiKhoan.Quyen),
+                    new SqlParameter("@MaNV", taiKhoan.MaNV)
+                };
+
+                int result = DatabaseHelper.ExecuteNonQuery(query, parameters);
+                return result > 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool Update(TaiKhoanDTO taiKhoan)
+        {
+            try
+            {
+                string query = "UPDATE TaiKhoan SET MatKhau = @MatKhau, Quyen = @Quyen, MaNV = @MaNV " +
+                              "WHERE TaiKhoan = @TaiKhoan";
+
+                SqlParameter[] parameters = {
+                    new SqlParameter("@TaiKhoan", taiKhoan.TaiKhoan),
+                    new SqlParameter("@MatKhau", taiKhoan.MatKhau),
+                    new SqlParameter("@Quyen", taiKhoan.Quyen),
+                    new SqlParameter("@MaNV", taiKhoan.MaNV)
+                };
+
+                int result = DatabaseHelper.ExecuteNonQuery(query, parameters);
+                return result > 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool Delete(string taiKhoan)
+        {
+            try
+            {
+                string query = "DELETE FROM TaiKhoan WHERE TaiKhoan = @TaiKhoan";
+                SqlParameter[] parameters = {
+                    new SqlParameter("@TaiKhoan", taiKhoan)
+                };
+
+                int result = DatabaseHelper.ExecuteNonQuery(query, parameters);
+                return result > 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool ChangePassword(string taiKhoan, string matKhauMoi)
+        {
+            try
+            {
+                string query = "UPDATE TaiKhoan SET MatKhau = @MatKhau WHERE TaiKhoan = @TaiKhoan";
+
+                SqlParameter[] parameters = {
+                    new SqlParameter("@TaiKhoan", taiKhoan),
+                    new SqlParameter("@MatKhau", matKhauMoi)
+                };
+
+                int result = DatabaseHelper.ExecuteNonQuery(query, parameters);
+                return result > 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+    }
+}

@@ -1,0 +1,12 @@
+﻿using System.Windows.Forms;
+
+namespace QUANLYCOFFEESHOP.GUI
+{
+    public partial class frmLoaiSanPham : Form
+    {
+        public frmLoaiSanPham()
+        {
+            InitializeComponent();
+        }
+    }
+}

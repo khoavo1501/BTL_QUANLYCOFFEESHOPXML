@@ -1,0 +1,423 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+using QUANLYCOFFEESHOP.DAL;
+using QUANLYCOFFEESHOP.DTO;
+using QUANLYCOFFEESHOP.Utils;
+
+namespace QUANLYCOFFEESHOP.GUI
+{
+    public partial class frmBanHang : Form
+    {
+        private SanPhamDAL sanPhamDAL = new SanPhamDAL();
+        private LoaiSanPhamDAL loaiSanPhamDAL = new LoaiSanPhamDAL();
+        private HoaDonDAL hoaDonDAL = new HoaDonDAL();
+        private CTHoaDonDAL ctHoaDonDAL = new CTHoaDonDAL();
+        
+        private DataTable dtGioHang = new DataTable();
+
+        public frmBanHang()
+        {
+            InitializeComponent();
+        }
+
+        private void frmBanHang_Load(object sender, EventArgs e)
+        {
+            InitializeGioHang();
+            LoadComboBoxLoai();
+            LoadSanPham();
+            UpdateTongTien();
+        }
+
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+            LoadComboBoxLoai();
+            LoadSanPham();
+        }
+
+        private void InitializeGioHang()
+        {
+            dtGioHang.Columns.Add("MaSP", typeof(string));
+            dtGioHang.Columns.Add("TenSP", typeof(string));
+            dtGioHang.Columns.Add("DonGia", typeof(int));
+            dtGioHang.Columns.Add("SoLuong", typeof(int));
+            dtGioHang.Columns.Add("ThanhTien", typeof(int));
+
+            dgvGioHang.DataSource = dtGioHang;
+
+            dgvGioHang.Columns["MaSP"].HeaderText = "Mã SP";
+            dgvGioHang.Columns["TenSP"].HeaderText = "Tên sản phẩm";
+            dgvGioHang.Columns["DonGia"].HeaderText = "Đơn giá";
+            dgvGioHang.Columns["SoLuong"].HeaderText = "SL";
+            dgvGioHang.Columns["ThanhTien"].HeaderText = "Thành tiền";
+
+            dgvGioHang.Columns["DonGia"].DefaultCellStyle.Format = "#,##0 đ";
+            dgvGioHang.Columns["ThanhTien"].DefaultCellStyle.Format = "#,##0 đ";
+            dgvGioHang.Columns["DonGia"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            dgvGioHang.Columns["ThanhTien"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+        }
+
+        private void LoadComboBoxLoai()
+        {
+            try
+            {
+                string currentValue = cboLoaiSP.SelectedValue?.ToString();
+
+                List<LoaiSanPhamDTO> listLoai = loaiSanPhamDAL.GetAll();
+                listLoai.Insert(0, new LoaiSanPhamDTO { MaLoai = "", TenLoai = "-- Tất cả --" });
+                
+                cboLoaiSP.DataSource = null;
+                cboLoaiSP.DataSource = listLoai;
+                cboLoaiSP.DisplayMember = "TenLoai";
+                cboLoaiSP.ValueMember = "MaLoai";
+
+                if (!string.IsNullOrEmpty(currentValue) && cboLoaiSP.Items.Count > 0)
+                {
+                    try
+                    {
+                        cboLoaiSP.SelectedValue = currentValue;
+                    }
+                    catch
+                    {
+                        if (cboLoaiSP.Items.Count > 0)
+                            cboLoaiSP.SelectedIndex = 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi load loại sản phẩm: " + ex.Message);
+            }
+        }
+
+        private void LoadSanPham()
+        {
+            try
+            {
+                flpSanPham.Controls.Clear();
+                List<SanPhamDTO> list;
+
+                string maLoai = cboLoaiSP.SelectedValue?.ToString();
+                if (string.IsNullOrEmpty(maLoai))
+                {
+                    list = sanPhamDAL.GetAvailableProducts();
+                }
+                else
+                {
+                    list = sanPhamDAL.GetByCategory(maLoai);
+                }
+
+                foreach (var sp in list)
+                {
+                    Panel pnlSP = new Panel
+                    {
+                        Width = 150,
+                        Height = 180,
+                        BorderStyle = BorderStyle.FixedSingle,
+                        Margin = new Padding(10),
+                        Cursor = Cursors.Hand,
+                        Tag = sp
+                    };
+
+                    Label lblTen = new Label
+                    {
+                        Text = sp.TenSP,
+                        Dock = DockStyle.Top,
+                        Height = 60,
+                        TextAlign = ContentAlignment.MiddleCenter,
+                        Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                        ForeColor = Color.FromArgb(102, 126, 234)
+                    };
+
+                    Label lblGia = new Label
+                    {
+                        Text = Helper.FormatCurrency(sp.Gia),
+                        Dock = DockStyle.Top,
+                        Height = 40,
+                        TextAlign = ContentAlignment.MiddleCenter,
+                        Font = new Font("Segoe UI", 11, FontStyle.Bold),
+                        ForeColor = Color.FromArgb(40, 167, 69)
+                    };
+
+                    Button btnThem = new Button
+                    {
+                        Text = "Thêm vào giỏ",
+                        Dock = DockStyle.Bottom,
+                        Height = 40,
+                        BackColor = Color.FromArgb(40, 167, 69),
+                        ForeColor = Color.White,
+                        FlatStyle = FlatStyle.Flat,
+                        Font = new Font("Segoe UI", 9, FontStyle.Bold)
+                    };
+                    btnThem.FlatAppearance.BorderSize = 0;
+                    btnThem.Click += (s, ev) => ThemVaoGio(sp);
+
+                    pnlSP.Controls.Add(lblGia);
+                    pnlSP.Controls.Add(lblTen);
+                    pnlSP.Controls.Add(btnThem);
+
+                    flpSanPham.Controls.Add(pnlSP);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi load sản phẩm: " + ex.Message);
+            }
+        }
+
+        private void ThemVaoGio(SanPhamDTO sp)
+        {
+            DataRow[] rows = dtGioHang.Select($"MaSP = '{sp.MaSP}'");
+            
+            if (rows.Length > 0)
+            {
+                int soLuong = Convert.ToInt32(rows[0]["SoLuong"]) + 1;
+                rows[0]["SoLuong"] = soLuong;
+                rows[0]["ThanhTien"] = soLuong * sp.Gia;
+            }
+            else
+            {
+                dtGioHang.Rows.Add(sp.MaSP, sp.TenSP, sp.Gia, 1, sp.Gia);
+            }
+
+            UpdateTongTien();
+        }
+
+        private void cboLoaiSP_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadSanPham();
+        }
+
+        private void btnTimKiem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string keyword = txtTimKiem.Text.Trim();
+                if (string.IsNullOrEmpty(keyword))
+                {
+                    LoadSanPham();
+                    return;
+                }
+
+                flpSanPham.Controls.Clear();
+                List<SanPhamDTO> list = sanPhamDAL.Search(keyword);
+                list = list.Where(x => x.TrangThai == "Còn bán").ToList();
+
+                foreach (var sp in list)
+                {
+                    Panel pnlSP = new Panel
+                    {
+                        Width = 150,
+                        Height = 180,
+                        BorderStyle = BorderStyle.FixedSingle,
+                        Margin = new Padding(10),
+                        Cursor = Cursors.Hand,
+                        Tag = sp
+                    };
+
+                    Label lblTen = new Label
+                    {
+                        Text = sp.TenSP,
+                        Dock = DockStyle.Top,
+                        Height = 60,
+                        TextAlign = ContentAlignment.MiddleCenter,
+                        Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                        ForeColor = Color.FromArgb(102, 126, 234)
+                    };
+
+                    Label lblGia = new Label
+                    {
+                        Text = Helper.FormatCurrency(sp.Gia),
+                        Dock = DockStyle.Top,
+                        Height = 40,
+                        TextAlign = ContentAlignment.MiddleCenter,
+                        Font = new Font("Segoe UI", 11, FontStyle.Bold),
+                        ForeColor = Color.FromArgb(40, 167, 69)
+                    };
+
+                    Button btnThem = new Button
+                    {
+                        Text = "Thêm vào giỏ",
+                        Dock = DockStyle.Bottom,
+                        Height = 40,
+                        BackColor = Color.FromArgb(40, 167, 69),
+                        ForeColor = Color.White,
+                        FlatStyle = FlatStyle.Flat,
+                        Font = new Font("Segoe UI", 9, FontStyle.Bold)
+                    };
+                    btnThem.FlatAppearance.BorderSize = 0;
+                    btnThem.Click += (s, ev) => ThemVaoGio(sp);
+
+                    pnlSP.Controls.Add(lblGia);
+                    pnlSP.Controls.Add(lblTen);
+                    pnlSP.Controls.Add(btnThem);
+
+                    flpSanPham.Controls.Add(pnlSP);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tìm kiếm: " + ex.Message);
+            }
+        }
+
+        private void dgvGioHang_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                btnTang.Enabled = true;
+                btnGiam.Enabled = true;
+                btnXoaSP.Enabled = true;
+            }
+        }
+
+        private void btnTang_Click(object sender, EventArgs e)
+        {
+            if (dgvGioHang.CurrentRow != null)
+            {
+                int rowIndex = dgvGioHang.CurrentRow.Index;
+                int soLuong = Convert.ToInt32(dtGioHang.Rows[rowIndex]["SoLuong"]) + 1;
+                int donGia = Convert.ToInt32(dtGioHang.Rows[rowIndex]["DonGia"]);
+                
+                dtGioHang.Rows[rowIndex]["SoLuong"] = soLuong;
+                dtGioHang.Rows[rowIndex]["ThanhTien"] = soLuong * donGia;
+                
+                UpdateTongTien();
+            }
+        }
+
+        private void btnGiam_Click(object sender, EventArgs e)
+        {
+            if (dgvGioHang.CurrentRow != null)
+            {
+                int rowIndex = dgvGioHang.CurrentRow.Index;
+                int soLuong = Convert.ToInt32(dtGioHang.Rows[rowIndex]["SoLuong"]);
+                
+                if (soLuong > 1)
+                {
+                    soLuong--;
+                    int donGia = Convert.ToInt32(dtGioHang.Rows[rowIndex]["DonGia"]);
+                    
+                    dtGioHang.Rows[rowIndex]["SoLuong"] = soLuong;
+                    dtGioHang.Rows[rowIndex]["ThanhTien"] = soLuong * donGia;
+                    
+                    UpdateTongTien();
+                }
+                else
+                {
+                    MessageBox.Show("Số lượng tối thiểu là 1!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+        }
+
+        private void btnXoaSP_Click(object sender, EventArgs e)
+        {
+            if (dgvGioHang.CurrentRow != null)
+            {
+                DialogResult result = MessageBox.Show("Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                
+                if (result == DialogResult.Yes)
+                {
+                    int rowIndex = dgvGioHang.CurrentRow.Index;
+                    dtGioHang.Rows.RemoveAt(rowIndex);
+                    UpdateTongTien();
+                }
+            }
+        }
+
+        private void btnThanhToan_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dtGioHang.Rows.Count == 0)
+                {
+                    MessageBox.Show("Giỏ hàng trống!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                string maHD = hoaDonDAL.GenerateNewMaHD();
+                int tongTien = 0;
+
+                foreach (DataRow row in dtGioHang.Rows)
+                {
+                    tongTien += Convert.ToInt32(row["ThanhTien"]);
+                }
+
+                HoaDonDTO hoaDon = new HoaDonDTO
+                {
+                    MaHD = maHD,
+                    MaNV = SessionManager.CurrentUser.MaNV,
+                    ThoiGianLap = DateTime.Now,
+                    TongTien = tongTien,
+                    TrangThai = "Đã thanh toán"
+                };
+
+                if (hoaDonDAL.Insert(hoaDon))
+                {
+                    foreach (DataRow row in dtGioHang.Rows)
+                    {
+                        CTHoaDonDTO chiTiet = new CTHoaDonDTO
+                        {
+                            MaHD = maHD,
+                            MaSP = row["MaSP"].ToString(),
+                            SoLuong = Convert.ToInt32(row["SoLuong"]),
+                            DonGia = Convert.ToInt32(row["DonGia"]),
+                            ThanhTien = Convert.ToInt32(row["ThanhTien"])
+                        };
+                        ctHoaDonDAL.Insert(chiTiet);
+                    }
+
+                    MessageBox.Show($"Thanh toán thành công!\nMã hóa đơn: {maHD}\nTổng tiền: {Helper.FormatCurrency(tongTien)}", 
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    // KHÔNG CẦN Export vì dữ liệu đã lưu trong XML
+                    // XMLHelper.ExportTableToXML sẽ ghi đè dữ liệu từ DB (rỗng) vào XML
+                    // Đã tắt để tránh mất dữ liệu
+
+                    dtGioHang.Clear();
+                    UpdateTongTien();
+                    btnTang.Enabled = false;
+                    btnGiam.Enabled = false;
+                    btnXoaSP.Enabled = false;
+                }
+                else
+                {
+                    MessageBox.Show("Thanh toán thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi thanh toán: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnHuyDon_Click(object sender, EventArgs e)
+        {
+            if (dtGioHang.Rows.Count > 0)
+            {
+                DialogResult result = MessageBox.Show("Bạn có chắc muốn hủy đơn hàng này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                
+                if (result == DialogResult.Yes)
+                {
+                    dtGioHang.Clear();
+                    UpdateTongTien();
+                    MessageBox.Show("Đã hủy đơn hàng!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+        }
+
+        private void UpdateTongTien()
+        {
+            int tongTien = 0;
+            foreach (DataRow row in dtGioHang.Rows)
+            {
+                tongTien += Convert.ToInt32(row["ThanhTien"]);
+            }
+            lblTongTien.Text = Helper.FormatCurrency(tongTien);
+        }
+    }
+}

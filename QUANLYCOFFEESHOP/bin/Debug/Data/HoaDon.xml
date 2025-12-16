@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<HoaDons>
+  <HoaDon>
+    <MaHD>HD01</MaHD>
+    <MaNV>NV02</MaNV>
+    <ThoiGianLap>2025-12-08T20:38:44.22</ThoiGianLap>
+    <TongTien>75000</TongTien>
+    <TrangThai>Đã thanh toán</TrangThai>
+  </HoaDon>
+  <HoaDon>
+    <MaHD>HD013</MaHD>
+    <MaNV>NV01</MaNV>
+    <ThoiGianLap>2025-12-16T00:00:01</ThoiGianLap>
+    <TongTien>40000</TongTien>
+    <TrangThai>Đã thanh toán</TrangThai>
+  </HoaDon>
+  <HoaDon>
+    <MaHD>HD02</MaHD>
+    <MaNV>NV03</MaNV>
+    <ThoiGianLap>2025-12-09T20:38:44.22</ThoiGianLap>
+    <TongTien>75000</TongTien>
+    <TrangThai>Đã thanh toán</TrangThai>
+  </HoaDon>
+  <HoaDon>
+    <MaHD>HD03</MaHD>
+    <MaNV>NV02</MaNV>
+    <ThoiGianLap>2025-12-10T20:38:44.22</ThoiGianLap>
+    <TongTien>80000</TongTien>
+    <TrangThai>Đã thanh toán</TrangThai>
+  </HoaDon>
+  <HoaDon>
+    <MaHD>HD04</MaHD>
+    <MaNV>NV01</MaNV>
+    <ThoiGianLap>2025-12-11T20:38:44.22</ThoiGianLap>
+    <TongTien>30000</TongTien>
+    <TrangThai>Đã thanh toán</TrangThai>
+  </HoaDon>
+  <HoaDon>
+    <MaHD>HD05</MaHD>
+    <MaNV>NV01</MaNV>
+    <ThoiGianLap>2025-12-12T20:38:44.22</ThoiGianLap>
+    <TongTien>60000</TongTien>
+    <TrangThai>Đã thanh toán</TrangThai>
+  </HoaDon>
+  <HoaDon>
+    <MaHD>HD06</MaHD>
+    <MaNV>NV02</MaNV>
+    <ThoiGianLap>2025-12-13T20:38:44.22</ThoiGianLap>
+    <TongTien>64000</TongTien>
+    <TrangThai>Đã thanh toán</TrangThai>
+  </HoaDon>
+  <HoaDon>
+    <MaHD>HD07</MaHD>
+    <MaNV>NV03</MaNV>
+    <ThoiGianLap>2025-12-14T20:38:44.22</ThoiGianLap>
+    <TongTien>90000</TongTien>
+    <TrangThai>Đã thanh toán</TrangThai>
+  </HoaDon>
+  <HoaDon>
+    <MaHD>HD08</MaHD>
+    <MaNV>NV01</MaNV>
+    <ThoiGianLap>2025-12-15T20:38:44.22</ThoiGianLap>
+    <TongTien>45000</TongTien>
+    <TrangThai>Đã thanh toán</TrangThai>
+  </HoaDon>
+  <HoaDon>
+    <MaHD>HD09</MaHD>
+    <MaNV>NV02</MaNV>
+    <ThoiGianLap>2025-12-15T20:38:44.22</ThoiGianLap>
+    <TongTien>85000</TongTien>
+    <TrangThai>Đã thanh toán</TrangThai>
+  </HoaDon>
+  <HoaDon>
+    <MaHD>HD10</MaHD>
+    <MaNV>NV03</MaNV>
+    <ThoiGianLap>2025-12-15T20:38:44.22</ThoiGianLap>
+    <TongTien>65000</TongTien>
+    <TrangThai>Đã thanh toán</TrangThai>
+  </HoaDon>
+  <HoaDon>
+    <MaHD>HD11</MaHD>
+    <MaNV>NV01</MaNV>
+    <ThoiGianLap>2025-12-15T20:39:05.857</ThoiGianLap>
+    <TongTien>30000</TongTien>
+    <TrangThai>Đã thanh toán</TrangThai>
+  </HoaDon>
+  <HoaDon>
+    <MaHD>HD12</MaHD>
+    <MaNV>NV01</MaNV>
+    <ThoiGianLap>2025-12-15T22:30:35.383</ThoiGianLap>
+    <TongTien>152000</TongTien>
+    <TrangThai>Đã thanh toán</TrangThai>
+  </HoaDon>
+  <HoaDon>
+    <MaHD>HD014</MaHD>
+    <MaNV>NV01</MaNV>
+    <ThoiGianLap>2025-12-16 00:26:35</ThoiGianLap>
+    <TongTien>70000</TongTien>
+    <TrangThai>Đã thanh toán</TrangThai>
+  </HoaDon>
+  <HoaDon>
+    <MaHD>HD015</MaHD>
+    <MaNV>NV01</MaNV>
+    <ThoiGianLap>2025-12-16 00:35:10</ThoiGianLap>
+    <TongTien>64000</TongTien>
+    <TrangThai>Đã thanh toán</TrangThai>
+  </HoaDon>
+  <HoaDon>
+    <MaHD>HD016</MaHD>
+    <MaNV>NV01</MaNV>
+    <ThoiGianLap>2025-12-16 02:03:02</ThoiGianLap>
+    <TongTien>55000</TongTien>
+    <TrangThai>Đã thanh toán</TrangThai>
+  </HoaDon>
+  <HoaDon>
+    <MaHD>HD017</MaHD>
+    <MaNV>NV03</MaNV>
+    <ThoiGianLap>2025-12-16 02:03:33</ThoiGianLap>
+    <TongTien>127000</TongTien>
+    <TrangThai>Đã thanh toán</TrangThai>
+  </HoaDon>
+</HoaDons>

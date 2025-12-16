@@ -1,0 +1,278 @@
+﻿namespace QUANLYCOFFEESHOP.GUI
+{
+    partial class frmTaiKhoan
+    {
+        private System.ComponentModel.IContainer components = null;
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        private void InitializeComponent()
+        {
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnResetMK = new System.Windows.Forms.Button();
+            this.btnLamMoi = new System.Windows.Forms.Button();
+            this.btnXoa = new System.Windows.Forms.Button();
+            this.btnSua = new System.Windows.Forms.Button();
+            this.btnThem = new System.Windows.Forms.Button();
+            this.cboNhanVien = new System.Windows.Forms.ComboBox();
+            this.cboQuyen = new System.Windows.Forms.ComboBox();
+            this.txtMatKhau = new System.Windows.Forms.TextBox();
+            this.txtTaiKhoan = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.dgvTaiKhoan = new System.Windows.Forms.DataGridView();
+            this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTaiKhoan)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.btnResetMK);
+            this.groupBox1.Controls.Add(this.btnLamMoi);
+            this.groupBox1.Controls.Add(this.btnXoa);
+            this.groupBox1.Controls.Add(this.btnSua);
+            this.groupBox1.Controls.Add(this.btnThem);
+            this.groupBox1.Controls.Add(this.cboNhanVien);
+            this.groupBox1.Controls.Add(this.cboQuyen);
+            this.groupBox1.Controls.Add(this.txtMatKhau);
+            this.groupBox1.Controls.Add(this.txtTaiKhoan);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox1.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.groupBox1.Location = new System.Drawing.Point(0, 0);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(900, 250);
+            this.groupBox1.TabIndex = 0;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Thông tin tài khoản";
+            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // btnResetMK
+            // 
+            this.btnResetMK.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(193)))), ((int)(((byte)(7)))));
+            this.btnResetMK.Enabled = false;
+            this.btnResetMK.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnResetMK.ForeColor = System.Drawing.Color.White;
+            this.btnResetMK.Location = new System.Drawing.Point(680, 190);
+            this.btnResetMK.Name = "btnResetMK";
+            this.btnResetMK.Size = new System.Drawing.Size(150, 40);
+            this.btnResetMK.TabIndex = 12;
+            this.btnResetMK.Text = "Reset mật khẩu";
+            this.btnResetMK.UseVisualStyleBackColor = false;
+            this.btnResetMK.Click += new System.EventHandler(this.btnResetMK_Click);
+            // 
+            // btnLamMoi
+            // 
+            this.btnLamMoi.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
+            this.btnLamMoi.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnLamMoi.ForeColor = System.Drawing.Color.White;
+            this.btnLamMoi.Location = new System.Drawing.Point(520, 190);
+            this.btnLamMoi.Name = "btnLamMoi";
+            this.btnLamMoi.Size = new System.Drawing.Size(150, 40);
+            this.btnLamMoi.TabIndex = 11;
+            this.btnLamMoi.Text = "Làm mới";
+            this.btnLamMoi.UseVisualStyleBackColor = false;
+            this.btnLamMoi.Click += new System.EventHandler(this.btnLamMoi_Click);
+            // 
+            // btnXoa
+            // 
+            this.btnXoa.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
+            this.btnXoa.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnXoa.ForeColor = System.Drawing.Color.White;
+            this.btnXoa.Location = new System.Drawing.Point(360, 190);
+            this.btnXoa.Name = "btnXoa";
+            this.btnXoa.Size = new System.Drawing.Size(150, 40);
+            this.btnXoa.TabIndex = 10;
+            this.btnXoa.Text = "Xóa";
+            this.btnXoa.UseVisualStyleBackColor = false;
+            this.btnXoa.Click += new System.EventHandler(this.btnXoa_Click);
+            // 
+            // btnSua
+            // 
+            this.btnSua.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(255)))));
+            this.btnSua.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnSua.ForeColor = System.Drawing.Color.White;
+            this.btnSua.Location = new System.Drawing.Point(200, 190);
+            this.btnSua.Name = "btnSua";
+            this.btnSua.Size = new System.Drawing.Size(150, 40);
+            this.btnSua.TabIndex = 9;
+            this.btnSua.Text = "Sửa";
+            this.btnSua.UseVisualStyleBackColor = false;
+            this.btnSua.Click += new System.EventHandler(this.btnSua_Click);
+            // 
+            // btnThem
+            // 
+            this.btnThem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnThem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnThem.ForeColor = System.Drawing.Color.White;
+            this.btnThem.Location = new System.Drawing.Point(40, 190);
+            this.btnThem.Name = "btnThem";
+            this.btnThem.Size = new System.Drawing.Size(150, 40);
+            this.btnThem.TabIndex = 8;
+            this.btnThem.Text = "Thêm";
+            this.btnThem.UseVisualStyleBackColor = false;
+            this.btnThem.Click += new System.EventHandler(this.btnThem_Click);
+            // 
+            // cboNhanVien
+            // 
+            this.cboNhanVien.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboNhanVien.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.cboNhanVien.FormattingEnabled = true;
+            this.cboNhanVien.Location = new System.Drawing.Point(150, 140);
+            this.cboNhanVien.Name = "cboNhanVien";
+            this.cboNhanVien.Size = new System.Drawing.Size(680, 25);
+            this.cboNhanVien.TabIndex = 7;
+            // 
+            // cboQuyen
+            // 
+            this.cboQuyen.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboQuyen.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.cboQuyen.FormattingEnabled = true;
+            this.cboQuyen.Items.AddRange(new object[] {
+            "Nhân viên",
+            "Quản lý"});
+            this.cboQuyen.Location = new System.Drawing.Point(150, 100);
+            this.cboQuyen.Name = "cboQuyen";
+            this.cboQuyen.Size = new System.Drawing.Size(680, 25);
+            this.cboQuyen.TabIndex = 6;
+            // 
+            // txtMatKhau
+            // 
+            this.txtMatKhau.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtMatKhau.Location = new System.Drawing.Point(150, 60);
+            this.txtMatKhau.Name = "txtMatKhau";
+            this.txtMatKhau.Size = new System.Drawing.Size(680, 25);
+            this.txtMatKhau.TabIndex = 5;
+            this.txtMatKhau.UseSystemPasswordChar = true;
+            // 
+            // txtTaiKhoan
+            // 
+            this.txtTaiKhoan.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtTaiKhoan.Location = new System.Drawing.Point(150, 30);
+            this.txtTaiKhoan.Name = "txtTaiKhoan";
+            this.txtTaiKhoan.Size = new System.Drawing.Size(680, 25);
+            this.txtTaiKhoan.TabIndex = 4;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.label4.Location = new System.Drawing.Point(40, 143);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(74, 19);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "Nhân viên:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.label3.Location = new System.Drawing.Point(40, 103);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(53, 19);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "Quyền:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.label2.Location = new System.Drawing.Point(40, 63);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(71, 19);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Mật khẩu:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.label1.Location = new System.Drawing.Point(40, 33);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(69, 19);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Tài khoản:";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.dgvTaiKhoan);
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox2.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.groupBox2.Location = new System.Drawing.Point(0, 250);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(900, 350);
+            this.groupBox2.TabIndex = 1;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Danh sách tài khoản";
+            // 
+            // dgvTaiKhoan
+            // 
+            this.dgvTaiKhoan.AllowUserToAddRows = false;
+            this.dgvTaiKhoan.AllowUserToDeleteRows = false;
+            this.dgvTaiKhoan.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvTaiKhoan.BackgroundColor = System.Drawing.Color.White;
+            this.dgvTaiKhoan.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTaiKhoan.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvTaiKhoan.Location = new System.Drawing.Point(3, 21);
+            this.dgvTaiKhoan.MultiSelect = false;
+            this.dgvTaiKhoan.Name = "dgvTaiKhoan";
+            this.dgvTaiKhoan.ReadOnly = true;
+            this.dgvTaiKhoan.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvTaiKhoan.Size = new System.Drawing.Size(894, 326);
+            this.dgvTaiKhoan.TabIndex = 0;
+            this.dgvTaiKhoan.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTaiKhoan_CellClick);
+            // 
+            // frmTaiKhoan
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(900, 600);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupBox1);
+            this.Name = "frmTaiKhoan";
+            this.Text = "Quản lý tài khoản";
+            this.Load += new System.EventHandler(this.frmTaiKhoan_Load);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTaiKhoan)).EndInit();
+            this.ResumeLayout(false);
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtTaiKhoan;
+        private System.Windows.Forms.TextBox txtMatKhau;
+        private System.Windows.Forms.ComboBox cboQuyen;
+        private System.Windows.Forms.ComboBox cboNhanVien;
+        private System.Windows.Forms.Button btnThem;
+        private System.Windows.Forms.Button btnSua;
+        private System.Windows.Forms.Button btnXoa;
+        private System.Windows.Forms.Button btnLamMoi;
+        private System.Windows.Forms.Button btnResetMK;
+        private System.Windows.Forms.DataGridView dgvTaiKhoan;
+    }
+}

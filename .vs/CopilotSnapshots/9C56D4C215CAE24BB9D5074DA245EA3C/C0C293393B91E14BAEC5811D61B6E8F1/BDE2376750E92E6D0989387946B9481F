@@ -1,0 +1,76 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using QUANLYCOFFEESHOP.DTO;
+
+namespace QUANLYCOFFEESHOP.DAL
+{
+    public class CTHoaDonDAL
+    {
+        public List<CTHoaDonDTO> GetByMaHD(string maHD)
+        {
+            List<CTHoaDonDTO> list = new List<CTHoaDonDTO>();
+
+            string query = "SELECT * FROM CTHoaDon WHERE MaHD = @MaHD";
+            SqlParameter[] parameters = {
+                new SqlParameter("@MaHD", maHD)
+            };
+
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
+
+            foreach (DataRow row in dt.Rows)
+            {
+                CTHoaDonDTO ct = new CTHoaDonDTO
+                {
+                    MaHD = row["MaHD"].ToString(),
+                    MaSP = row["MaSP"].ToString(),
+                    SoLuong = Convert.ToInt32(row["SoLuong"]),
+                    DonGia = Convert.ToInt32(row["DonGia"]),
+                    ThanhTien = Convert.ToInt32(row["ThanhTien"])
+                };
+                list.Add(ct);
+            }
+
+            return list;
+        }
+
+        public bool Insert(CTHoaDonDTO chiTiet)
+        {
+            try
+            {
+                string query = "INSERT INTO CTHoaDon (MaHD, MaSP, SoLuong, DonGia, ThanhTien) " +
+                              "VALUES (@MaHD, @MaSP, @SoLuong, @DonGia, @ThanhTien)";
+
+                SqlParameter[] parameters = {
+                    new SqlParameter("@MaHD", chiTiet.MaHD),
+                    new SqlParameter("@MaSP", chiTiet.MaSP),
+                    new SqlParameter("@SoLuong", chiTiet.SoLuong),
+                    new SqlParameter("@DonGia", chiTiet.DonGia),
+                    new SqlParameter("@ThanhTien", chiTiet.ThanhTien)
+                };
+
+                int result = DatabaseHelper.ExecuteNonQuery(query, parameters);
+                return result > 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public DataTable GetDetailedByMaHD(string maHD)
+        {
+            string query = @"SELECT ct.MaHD, ct.MaSP, sp.TenSP, ct.SoLuong, ct.DonGia, ct.ThanhTien
+                           FROM CTHoaDon ct
+                           INNER JOIN SanPham sp ON ct.MaSP = sp.MaSP
+                           WHERE ct.MaHD = @MaHD";
+
+            SqlParameter[] parameters = {
+                new SqlParameter("@MaHD", maHD)
+            };
+
+            return DatabaseHelper.ExecuteQuery(query, parameters);
+        }
+    }
+}

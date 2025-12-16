@@ -1,0 +1,145 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Windows.Forms;
+using QUANLYCOFFEESHOP.DAL;
+using QUANLYCOFFEESHOP.DTO;
+using QUANLYCOFFEESHOP.Utils;
+
+namespace QUANLYCOFFEESHOP.GUI
+{
+    public partial class frmHoaDon : Form
+    {
+        private HoaDonDAL hoaDonDAL = new HoaDonDAL();
+        private CTHoaDonDAL ctHoaDonDAL = new CTHoaDonDAL();
+
+        public frmHoaDon()
+        {
+            InitializeComponent();
+        }
+
+        private void frmHoaDon_Load(object sender, EventArgs e)
+        {
+            dtpTuNgay.Value = DateTime.Now.AddMonths(-1);
+            dtpDenNgay.Value = DateTime.Now;
+            LoadDataGridView();
+        }
+
+        private void LoadDataGridView()
+        {
+            try
+            {
+                List<HoaDonDTO> list = hoaDonDAL.GetAll();
+                dgvHoaDon.DataSource = list;
+
+                dgvHoaDon.Columns["MaHD"].HeaderText = "Mã HD";
+                dgvHoaDon.Columns["MaNV"].HeaderText = "Mã NV";
+                dgvHoaDon.Columns["ThoiGianLap"].HeaderText = "Thời gian";
+                dgvHoaDon.Columns["TongTien"].HeaderText = "Tổng tiền";
+                dgvHoaDon.Columns["TrangThai"].HeaderText = "Trạng thái";
+
+                dgvHoaDon.Columns["ThoiGianLap"].DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
+                dgvHoaDon.Columns["TongTien"].DefaultCellStyle.Format = "#,##0 đ";
+                dgvHoaDon.Columns["TongTien"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi load dữ liệu: " + ex.Message);
+            }
+        }
+
+        private void dgvHoaDon_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dgvHoaDon.Rows[e.RowIndex];
+                string maHD = row.Cells["MaHD"].Value.ToString();
+                LoadChiTietHoaDon(maHD);
+            }
+        }
+
+        private void LoadChiTietHoaDon(string maHD)
+        {
+            try
+            {
+                DataTable dt = ctHoaDonDAL.GetDetailedByMaHD(maHD);
+                dgvChiTiet.DataSource = dt;
+
+                dgvChiTiet.Columns["MaHD"].HeaderText = "Mã HD";
+                dgvChiTiet.Columns["MaSP"].HeaderText = "Mã SP";
+                dgvChiTiet.Columns["TenSP"].HeaderText = "Tên sản phẩm";
+                dgvChiTiet.Columns["SoLuong"].HeaderText = "SL";
+                dgvChiTiet.Columns["DonGia"].HeaderText = "Đơn giá";
+                dgvChiTiet.Columns["ThanhTien"].HeaderText = "Thành tiền";
+
+                dgvChiTiet.Columns["DonGia"].DefaultCellStyle.Format = "#,##0 đ";
+                dgvChiTiet.Columns["ThanhTien"].DefaultCellStyle.Format = "#,##0 đ";
+                dgvChiTiet.Columns["DonGia"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dgvChiTiet.Columns["ThanhTien"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi load chi tiết: " + ex.Message);
+            }
+        }
+
+        private void btnTimKiem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DateTime tuNgay = dtpTuNgay.Value.Date;
+                DateTime denNgay = dtpDenNgay.Value.Date;
+
+                if (tuNgay > denNgay)
+                {
+                    MessageBox.Show("Từ ngày phải nhỏ hơn đến ngày!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                List<HoaDonDTO> list = hoaDonDAL.GetByDateRange(tuNgay, denNgay);
+                dgvHoaDon.DataSource = list;
+
+                int tongHD = list.Count;
+                int tongTien = 0;
+                foreach (var hd in list)
+                {
+                    tongTien += hd.TongTien;
+                }
+
+                lblThongKe.Text = $"Tổng: {tongHD} hóa đơn - Doanh thu: {Helper.FormatCurrency(tongTien)}";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tìm kiếm: " + ex.Message);
+            }
+        }
+
+        private void btnLamMoi_Click(object sender, EventArgs e)
+        {
+            dtpTuNgay.Value = DateTime.Now.AddMonths(-1);
+            dtpDenNgay.Value = DateTime.Now;
+            LoadDataGridView();
+            dgvChiTiet.DataSource = null;
+            lblThongKe.Text = "";
+        }
+
+        private void btnXuatXML_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Dữ liệu đã có sẵn trong XML
+                // Chức năng này chỉ hiển thị đường dẫn file XML
+                string xmlPath = XMLHelper.GetDataPath();
+                MessageBox.Show($"Dữ liệu XML đã có sẵn tại:\n{xmlPath}\n\nCác file:\n- HoaDon.xml\n- CTHoaDon.xml", 
+                    "Thông tin", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                
+                // Mở thư mục chứa file XML
+                System.Diagnostics.Process.Start("explorer.exe", xmlPath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+    }
+}

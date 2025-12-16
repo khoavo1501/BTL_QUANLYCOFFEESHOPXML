@@ -1,0 +1,164 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
+using QUANLYCOFFEESHOP.DTO;
+
+namespace QUANLYCOFFEESHOP.DAL
+{
+    public class LoaiSanPhamDAL
+    {
+        private const string FILE_NAME = "LoaiSanPham.xml";
+        private const string ROOT_NAME = "LoaiSanPhams";
+        private const string ELEMENT_NAME = "LoaiSanPham";
+
+        public List<LoaiSanPhamDTO> GetAll()
+        {
+            List<LoaiSanPhamDTO> list = new List<LoaiSanPhamDTO>();
+
+            try
+            {
+                XDocument doc = XMLHelper.LoadOrCreateXML(FILE_NAME, ROOT_NAME);
+
+                foreach (XElement element in doc.Root.Elements(ELEMENT_NAME))
+                {
+                    LoaiSanPhamDTO loai = new LoaiSanPhamDTO
+                    {
+                        MaLoai = element.Element("MaLoai")?.Value ?? "",
+                        TenLoai = element.Element("TenLoai")?.Value ?? "",
+                        MoTa = element.Element("MoTa")?.Value ?? ""
+                    };
+                    list.Add(loai);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi đọc dữ liệu loại sản phẩm: " + ex.Message);
+            }
+
+            return list;
+        }
+
+        public LoaiSanPhamDTO GetByID(string maLoai)
+        {
+            try
+            {
+                XDocument doc = XMLHelper.LoadOrCreateXML(FILE_NAME, ROOT_NAME);
+
+                XElement element = doc.Root.Elements(ELEMENT_NAME)
+                    .FirstOrDefault(x => x.Element("MaLoai")?.Value == maLoai);
+
+                if (element != null)
+                {
+                    return new LoaiSanPhamDTO
+                    {
+                        MaLoai = element.Element("MaLoai")?.Value ?? "",
+                        TenLoai = element.Element("TenLoai")?.Value ?? "",
+                        MoTa = element.Element("MoTa")?.Value ?? ""
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi tìm loại sản phẩm: " + ex.Message);
+            }
+
+            return null;
+        }
+
+        public bool Insert(LoaiSanPhamDTO loaiSanPham)
+        {
+            try
+            {
+                XDocument doc = XMLHelper.LoadOrCreateXML(FILE_NAME, ROOT_NAME);
+
+                if (doc.Root.Elements(ELEMENT_NAME).Any(x => x.Element("MaLoai")?.Value == loaiSanPham.MaLoai))
+                {
+                    System.Windows.Forms.MessageBox.Show("Mã loại đã tồn tại!");
+                    return false;
+                }
+
+                XElement newElement = new XElement(ELEMENT_NAME,
+                    new XElement("MaLoai", loaiSanPham.MaLoai),
+                    new XElement("TenLoai", loaiSanPham.TenLoai),
+                    new XElement("MoTa", loaiSanPham.MoTa)
+                );
+
+                doc.Root.Add(newElement);
+                
+                bool saved = XMLHelper.SaveXML(doc, FILE_NAME);
+                if (saved)
+                {
+                    XMLHelper.BackupToDatabase("LoaiSanPham", doc);
+                }
+                return saved;
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi thêm loại sản phẩm: " + ex.Message);
+                return false;
+            }
+        }
+
+        public bool Update(LoaiSanPhamDTO loaiSanPham)
+        {
+            try
+            {
+                XDocument doc = XMLHelper.LoadOrCreateXML(FILE_NAME, ROOT_NAME);
+
+                XElement element = doc.Root.Elements(ELEMENT_NAME)
+                    .FirstOrDefault(x => x.Element("MaLoai")?.Value == loaiSanPham.MaLoai);
+
+                if (element != null)
+                {
+                    element.Element("TenLoai").Value = loaiSanPham.TenLoai;
+                    element.Element("MoTa").Value = loaiSanPham.MoTa;
+
+                    bool saved = XMLHelper.SaveXML(doc, FILE_NAME);
+                    if (saved)
+                    {
+                        XMLHelper.BackupToDatabase("LoaiSanPham", doc);
+                    }
+                    return saved;
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi cập nhật loại sản phẩm: " + ex.Message);
+                return false;
+            }
+        }
+
+        public bool Delete(string maLoai)
+        {
+            try
+            {
+                XDocument doc = XMLHelper.LoadOrCreateXML(FILE_NAME, ROOT_NAME);
+
+                XElement element = doc.Root.Elements(ELEMENT_NAME)
+                    .FirstOrDefault(x => x.Element("MaLoai")?.Value == maLoai);
+
+                if (element != null)
+                {
+                    element.Remove();
+                    
+                    bool saved = XMLHelper.SaveXML(doc, FILE_NAME);
+                    if (saved)
+                    {
+                        XMLHelper.BackupToDatabase("LoaiSanPham", doc);
+                    }
+                    return saved;
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi xóa loại sản phẩm: " + ex.Message);
+                return false;
+            }
+        }
+    }
+}

@@ -1,0 +1,77 @@
+﻿using System;
+using System.Data;
+using System.Xml.Linq;
+using System.IO;
+using QUANLYCOFFEESHOP.Utils;
+
+namespace QUANLYCOFFEESHOP.DAL
+{
+    public class XMLHelper
+    {
+        private static string xmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Constants.BACKUP_FOLDER);
+
+        public static void EnsureBackupFolderExists()
+        {
+            if (!Directory.Exists(xmlPath))
+            {
+                Directory.CreateDirectory(xmlPath);
+            }
+        }
+
+        public static bool ExportTableToXML(string tableName, string fileName)
+        {
+            try
+            {
+                EnsureBackupFolderExists();
+                string query = $"SELECT * FROM {tableName}";
+                DataTable dt = DatabaseHelper.ExecuteQuery(query);
+
+                XDocument doc = new XDocument(new XElement(tableName + "s"));
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    XElement element = new XElement(tableName);
+                    foreach (DataColumn col in dt.Columns)
+                    {
+                        element.Add(new XElement(col.ColumnName, row[col]));
+                    }
+                    doc.Root.Add(element);
+                }
+
+                string filePath = Path.Combine(xmlPath, fileName);
+                doc.Save(filePath);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("L?i xu?t XML: " + ex.Message);
+                return false;
+            }
+        }
+
+        public static bool BackupAllTables()
+        {
+            try
+            {
+                ExportTableToXML("LoaiSanPham", "LoaiSanPham.xml");
+                ExportTableToXML("SanPham", "SanPham.xml");
+                ExportTableToXML("NhanVien", "NhanVien.xml");
+                ExportTableToXML("TaiKhoan", "TaiKhoan.xml");
+                ExportTableToXML("HoaDon", "HoaDon.xml");
+                ExportTableToXML("CTHoaDon", "CTHoaDon.xml");
+                ExportTableToXML("ThongTinCuaHang", "ThongTinCuaHang.xml");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("L?i backup: " + ex.Message);
+                return false;
+            }
+        }
+
+        public static string GetBackupPath()
+        {
+            return xmlPath;
+        }
+    }
+}

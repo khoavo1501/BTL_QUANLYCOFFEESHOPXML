@@ -1,0 +1,122 @@
+using System;
+using System.Windows.Forms;
+using QUANLYCOFFEESHOP.Utils;
+
+namespace QUANLYCOFFEESHOP.GUI
+{
+    public partial class frmMain : Form
+    {
+        public frmMain()
+        {
+            InitializeComponent();
+            this.IsMdiContainer = true;
+        }
+
+        private void frmMain_Load(object sender, EventArgs e)
+        {
+            toolStripStatusUser.Text = "Ng??i dùng: " + SessionManager.CurrentEmployee.HoTen;
+            toolStripStatusQuyen.Text = "Quy?n: " + (SessionManager.IsAdmin() ? "Qu?n lý" : "Nhân viên");
+            
+            if (!SessionManager.IsAdmin())
+            {
+                mnuQLNhanVien.Enabled = false;
+                mnuQLTaiKhoan.Enabled = false;
+            }
+        }
+
+        private void mnuBanHang_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new frmBanHang());
+        }
+
+        private void mnuQLSanPham_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new frmSanPham());
+        }
+
+        private void mnuQLLoaiSP_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new frmLoaiSanPham());
+        }
+
+        private void mnuQLNhanVien_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new frmNhanVien());
+        }
+
+        private void mnuQLTaiKhoan_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new frmTaiKhoan());
+        }
+
+        private void mnuDSHoaDon_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new frmHoaDon());
+        }
+
+        private void mnuBaoCao_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new frmBaoCao());
+        }
+
+        private void mnuDoiMatKhau_Click(object sender, EventArgs e)
+        {
+            frmDoiMatKhau frm = new frmDoiMatKhau();
+            frm.ShowDialog();
+        }
+
+        private void mnuThongTin_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new frmThongTin());
+        }
+
+        private void mnuDangXuat_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("B?n có ch?c mu?n ??ng xu?t?", "Xác nh?n",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                SessionManager.Logout();
+                this.Close();
+            }
+        }
+
+        private void mnuThoat_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("B?n có ch?c mu?n thoát?", "Xác nh?n",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+        }
+
+        private void OpenChildForm(Form childForm)
+        {
+            foreach (Form frm in this.MdiChildren)
+            {
+                if (frm.GetType() == childForm.GetType())
+                {
+                    frm.Activate();
+                    return;
+                }
+            }
+
+            childForm.MdiParent = this;
+            childForm.WindowState = FormWindowState.Maximized;
+            childForm.Show();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            toolStripStatusTime.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+        }
+
+        private void mnuHeThong_Click(object sender, EventArgs e)
+        {
+
+        }
+    }
+}

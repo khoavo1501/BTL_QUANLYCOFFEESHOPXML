@@ -1,0 +1,306 @@
+﻿# HƯỚNG DẪN KHẮC PHỤC LỖI ĐĂNG NHẬP
+
+## ❌ Lỗi hiện tại
+"Tên đăng nhập hoặc mật khẩu không đúng!"
+
+## ✅ NGUYÊN NHÂN
+- File XML chưa có dữ liệu tài khoản
+- Chưa khởi tạo dữ liệu mẫu
+
+## 🔧 GIẢI PHÁP
+
+### Cách 1: Tạo file DataInitializer.cs (Khuyến nghị)
+
+**Bước 1:** Tạo file mới `QUANLYCOFFEESHOP\Utils\DataInitializer.cs`
+
+**Bước 2:** Copy đoạn code sau vào file:
+
+```csharp
+using System;
+using QUANLYCOFFEESHOP.DAL;
+using QUANLYCOFFEESHOP.DTO;
+
+namespace QUANLYCOFFEESHOP.Utils
+{
+    public static class DataInitializer
+    {
+        public static void InitializeData()
+        {
+            try
+            {
+                InitializeNhanVien();
+                InitializeTaiKhoan();
+                InitializeLoaiSanPham();
+                InitializeSanPham();
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi khởi tạo dữ liệu: " + ex.Message);
+            }
+        }
+
+        private static void InitializeNhanVien()
+        {
+            NhanVienDAL dal = new NhanVienDAL();
+            if (dal.GetAll().Count > 0) return; // Đã có dữ liệu
+
+            // Admin
+            dal.Insert(new NhanVienDTO
+            {
+                MaNV = "ADMIN",
+                HoTen = "Administrator",
+                GioiTinh = "Nam",
+                NgaySinh = new DateTime(1990, 1, 1),
+                SDT = "0900000000",
+                DiaChi = "Hệ thống",
+                NgayVaoLam = DateTime.Now
+            });
+
+            // Nhân viên 1
+            dal.Insert(new NhanVienDTO
+            {
+                MaNV = "NV01",
+                HoTen = "Nguyễn Văn A",
+                GioiTinh = "Nam",
+                NgaySinh = new DateTime(1995, 5, 10),
+                SDT = "0905123456",
+                DiaChi = "Đà Nẵng",
+                NgayVaoLam = new DateTime(2024, 1, 1)
+            });
+
+            // Nhân viên 2
+            dal.Insert(new NhanVienDTO
+            {
+                MaNV = "NV02",
+                HoTen = "Trần Thị B",
+                GioiTinh = "Nữ",
+                NgaySinh = new DateTime(1998, 8, 15),
+                SDT = "0907654321",
+                DiaChi = "Đà Nẵng",
+                NgayVaoLam = new DateTime(2024, 1, 1)
+            });
+        }
+
+        private static void InitializeTaiKhoan()
+        {
+            TaiKhoanDAL dal = new TaiKhoanDAL();
+            if (dal.GetAll().Count > 0) return; // Đã có dữ liệu
+
+            // Tài khoản Admin
+            dal.Insert(new TaiKhoanDTO
+            {
+                TaiKhoan = "admin",
+                MatKhau = Helper.MD5Hash("123"), // Mật khẩu: 123
+                Quyen = Constants.QUYEN_ADMIN,
+                MaNV = "ADMIN"
+            });
+
+            // Tài khoản nhân viên 1
+            dal.Insert(new TaiKhoanDTO
+            {
+                TaiKhoan = "nv01",
+                MatKhau = Helper.MD5Hash("123"), // Mật khẩu: 123
+                Quyen = Constants.QUYEN_NHANVIEN,
+                MaNV = "NV01"
+            });
+
+            // Tài khoản nhân viên 2
+            dal.Insert(new TaiKhoanDTO
+            {
+                TaiKhoan = "nv02",
+                MatKhau = Helper.MD5Hash("123"), // Mật khẩu: 123
+                Quyen = Constants.QUYEN_NHANVIEN,
+                MaNV = "NV02"
+            });
+        }
+
+        private static void InitializeLoaiSanPham()
+        {
+            LoaiSanPhamDAL dal = new LoaiSanPhamDAL();
+            if (dal.GetAll().Count > 0) return; // Đã có dữ liệu
+
+            dal.Insert(new LoaiSanPhamDTO
+            {
+                MaLoai = "L01",
+                TenLoai = "Cà phê",
+                MoTa = "Các loại cà phê truyền thống và hiện đại"
+            });
+
+            dal.Insert(new LoaiSanPhamDTO
+            {
+                MaLoai = "L02",
+                TenLoai = "Trà sữa",
+                MoTa = "Trà sữa các loại"
+            });
+
+            dal.Insert(new LoaiSanPhamDTO
+            {
+                MaLoai = "L03",
+                TenLoai = "Sinh tố",
+                MoTa = "Sinh tố trái cây tươi ngon"
+            });
+
+            dal.Insert(new LoaiSanPhamDTO
+            {
+                MaLoai = "L04",
+                TenLoai = "Nước ép",
+                MoTa = "Nước ép trái cây tươi"
+            });
+
+            dal.Insert(new LoaiSanPhamDTO
+            {
+                MaLoai = "L05",
+                TenLoai = "Bánh ngọt",
+                MoTa = "Bánh ngọt các loại"
+            });
+        }
+
+        private static void InitializeSanPham()
+        {
+            SanPhamDAL dal = new SanPhamDAL();
+            if (dal.GetAll().Count > 0) return; // Đã có dữ liệu
+
+            // Cà phê
+            dal.Insert(new SanPhamDTO { MaSP = "SP01", TenSP = "Cà phê đen", Gia = 25000, MaLoai = "L01", TrangThai = Constants.TRANGTHAI_CONBAN });
+            dal.Insert(new SanPhamDTO { MaSP = "SP02", TenSP = "Cà phê sữa", Gia = 30000, MaLoai = "L01", TrangThai = Constants.TRANGTHAI_CONBAN });
+            dal.Insert(new SanPhamDTO { MaSP = "SP03", TenSP = "Bạc xỉu", Gia = 30000, MaLoai = "L01", TrangThai = Constants.TRANGTHAI_CONBAN });
+            dal.Insert(new SanPhamDTO { MaSP = "SP04", TenSP = "Cappuccino", Gia = 45000, MaLoai = "L01", TrangThai = Constants.TRANGTHAI_CONBAN });
+            dal.Insert(new SanPhamDTO { MaSP = "SP05", TenSP = "Latte", Gia = 45000, MaLoai = "L01", TrangThai = Constants.TRANGTHAI_CONBAN });
+
+            // Trà sữa
+            dal.Insert(new SanPhamDTO { MaSP = "SP06", TenSP = "Trà sữa truyền thống", Gia = 35000, MaLoai = "L02", TrangThai = Constants.TRANGTHAI_CONBAN });
+            dal.Insert(new SanPhamDTO { MaSP = "SP07", TenSP = "Trà sữa trân châu đường đen", Gia = 40000, MaLoai = "L02", TrangThai = Constants.TRANGTHAI_CONBAN });
+            dal.Insert(new SanPhamDTO { MaSP = "SP08", TenSP = "Trà sữa matcha", Gia = 42000, MaLoai = "L02", TrangThai = Constants.TRANGTHAI_CONBAN });
+
+            // Sinh tố
+            dal.Insert(new SanPhamDTO { MaSP = "SP09", TenSP = "Sinh tố bơ", Gia = 38000, MaLoai = "L03", TrangThai = Constants.TRANGTHAI_CONBAN });
+            dal.Insert(new SanPhamDTO { MaSP = "SP10", TenSP = "Sinh tố dâu", Gia = 35000, MaLoai = "L03", TrangThai = Constants.TRANGTHAI_CONBAN });
+            dal.Insert(new SanPhamDTO { MaSP = "SP11", TenSP = "Sinh tố xoài", Gia = 35000, MaLoai = "L03", TrangThai = Constants.TRANGTHAI_CONBAN });
+
+            // Nước ép
+            dal.Insert(new SanPhamDTO { MaSP = "SP12", TenSP = "Nước ép cam", Gia = 30000, MaLoai = "L04", TrangThai = Constants.TRANGTHAI_CONBAN });
+            dal.Insert(new SanPhamDTO { MaSP = "SP13", TenSP = "Nước ép dưa hấu", Gia = 28000, MaLoai = "L04", TrangThai = Constants.TRANGTHAI_CONBAN });
+            dal.Insert(new SanPhamDTO { MaSP = "SP14", TenSP = "Nước ép táo", Gia = 32000, MaLoai = "L04", TrangThai = Constants.TRANGTHAI_CONBAN });
+
+            // Bánh ngọt
+            dal.Insert(new SanPhamDTO { MaSP = "SP15", TenSP = "Bánh tiramisu", Gia = 45000, MaLoai = "L05", TrangThai = Constants.TRANGTHAI_CONBAN });
+            dal.Insert(new SanPhamDTO { MaSP = "SP16", TenSP = "Bánh mousse", Gia = 40000, MaLoai = "L05", TrangThai = Constants.TRANGTHAI_CONBAN });
+            dal.Insert(new SanPhamDTO { MaSP = "SP17", TenSP = "Bánh croissant", Gia = 35000, MaLoai = "L05", TrangThai = Constants.TRANGTHAI_CONBAN });
+        }
+    }
+}
+```
+
+**Bước 3:** File `frmLogin.cs` đã được cập nhật để tự động gọi `DataInitializer.InitializeData()` khi chạy.
+
+**Bước 4:** Build lại project (Ctrl + Shift + B)
+
+**Bước 5:** Chạy ứng dụng (F5)
+
+**Bước 6:** Đăng nhập:
+- Username: `admin`
+- Password: `123`
+
+---
+
+### Cách 2: Tạo XML thủ công (Nhanh nhưng không khuyến nghị)
+
+**Bước 1:** Tạo thư mục `bin\Debug\Data\`
+
+**Bước 2:** Tạo file `TaiKhoan.xml` với nội dung:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<TaiKhoans>
+  <TaiKhoan>
+    <TaiKhoan>admin</TaiKhoan>
+    <MatKhau>202cb962ac59075b964b07152d234b70</MatKhau>
+    <Quyen>1</Quyen>
+    <MaNV>ADMIN</MaNV>
+  </TaiKhoan>
+</TaiKhoans>
+```
+
+**Bước 3:** Tạo file `NhanVien.xml` với nội dung:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<NhanViens>
+  <NhanVien>
+    <MaNV>ADMIN</MaNV>
+    <HoTen>Administrator</HoTen>
+    <GioiTinh>Nam</GioiTinh>
+    <NgaySinh>1990-01-01</NgaySinh>
+    <SDT>0900000000</SDT>
+    <DiaChi>Hệ thống</DiaChi>
+    <NgayVaoLam>2024-01-01</NgayVaoLam>
+  </NhanVien>
+</NhanViens>
+```
+
+**Lưu ý:** Mật khẩu đã được mã hóa MD5:
+- `202cb962ac59075b964b07152d234b70` = MD5("123")
+
+**Bước 4:** Chạy ứng dụng và đăng nhập:
+- Username: `admin`
+- Password: `123`
+
+---
+
+## 📋 TÀI KHOẢN MẶC ĐỊNH
+
+Sau khi khởi tạo dữ liệu, bạn sẽ có các tài khoản:
+
+| Username | Password | Quyền | Mô tả |
+|----------|----------|-------|-------|
+| admin | 123 | Admin | Toàn quyền |
+| nv01 | 123 | Nhân viên | Giới hạn |
+| nv02 | 123 | Nhân viên | Giới hạn |
+
+---
+
+## 🔍 KIỂM TRA DỮ LIỆU
+
+Sau khi chạy app lần đầu, kiểm tra thư mục:
+```
+bin/Debug/Data/
+├── TaiKhoan.xml      ← Phải có file này
+├── NhanVien.xml      ← Phải có file này
+├── LoaiSanPham.xml   ← Tự động tạo
+└── SanPham.xml       ← Tự động tạo
+```
+
+Nếu có các file trên thì dữ liệu đã được khởi tạo thành công!
+
+---
+
+## ⚠️ LƯU Ý
+
+1. **Không sửa trực tiếp file XML** - Dùng giao diện để quản lý
+2. **Backup định kỳ** - Copy thư mục Data/ ra ngoài
+3. **Mật khẩu mặc định** - Đổi mật khẩu sau khi đăng nhập lần đầu
+
+---
+
+## 🆘 NẾU VẪN LỖI
+
+### Lỗi: "Không tìm thấy DataInitializer"
+→ Build lại project (Ctrl + Shift + B)
+
+### Lỗi: "File XML không hợp lệ"
+→ Xóa file XML lỗi, chạy lại app để tự động tạo mới
+
+### Lỗi: "Vẫn không đăng nhập được"
+→ Kiểm tra file `TaiKhoan.xml` có đúng cấu trúc không
+→ Mật khẩu phải là MD5 hash của "123"
+
+---
+
+## 📞 HỖ TRỢ
+
+Nếu vẫn gặp vấn đề, hãy:
+1. Check thư mục `bin/Debug/Data/` có file XML không
+2. Mở file `TaiKhoan.xml` kiểm tra cấu trúc
+3. Xem console Visual Studio có lỗi gì không
+
+**Chúc bạn thành công! 🎉**

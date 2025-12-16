@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LoaiSanPhams>
+  <LoaiSanPham>
+    <MaLoai>L01</MaLoai>
+    <TenLoai>Cà phê</TenLoai>
+    <MoTa>Các loại cà phê truyền thống và hiện đại</MoTa>
+  </LoaiSanPham>
+  <LoaiSanPham>
+    <MaLoai>L02</MaLoai>
+    <TenLoai>Trà</TenLoai>
+    <MoTa>Các loại trà đặc sản</MoTa>
+  </LoaiSanPham>
+  <LoaiSanPham>
+    <MaLoai>L03</MaLoai>
+    <TenLoai>Nước ép</TenLoai>
+    <MoTa>Nước ép trái cây tươi</MoTa>
+  </LoaiSanPham>
+  <LoaiSanPham>
+    <MaLoai>L04</MaLoai>
+    <TenLoai>Đá xay</TenLoai>
+    <MoTa>Nước đá xay các loại</MoTa>
+  </LoaiSanPham>
+  <LoaiSanPham>
+    <MaLoai>L05</MaLoai>
+    <TenLoai>Bánh</TenLoai>
+    <MoTa>Bánh ngọt và snack</MoTa>
+  </LoaiSanPham>
+</LoaiSanPhams>

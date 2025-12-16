@@ -1,0 +1,135 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using QUANLYCOFFEESHOP.DTO;
+
+namespace QUANLYCOFFEESHOP.DAL
+{
+    public class HoaDonDAL
+    {
+        public List<HoaDonDTO> GetAll()
+        {
+            List<HoaDonDTO> list = new List<HoaDonDTO>();
+
+            string query = "SELECT * FROM HoaDon ORDER BY ThoiGianLap DESC";
+            DataTable dt = DatabaseHelper.ExecuteQuery(query);
+
+            foreach (DataRow row in dt.Rows)
+            {
+                HoaDonDTO hd = new HoaDonDTO
+                {
+                    MaHD = row["MaHD"].ToString(),
+                    MaNV = row["MaNV"].ToString(),
+                    ThoiGianLap = Convert.ToDateTime(row["ThoiGianLap"]),
+                    TongTien = Convert.ToInt32(row["TongTien"]),
+                    TrangThai = row["TrangThai"].ToString()
+                };
+                list.Add(hd);
+            }
+
+            return list;
+        }
+
+        public HoaDonDTO GetByID(string maHD)
+        {
+            string query = "SELECT * FROM HoaDon WHERE MaHD = @MaHD";
+            SqlParameter[] parameters = {
+                new SqlParameter("@MaHD", maHD)
+            };
+
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
+
+            if (dt.Rows.Count > 0)
+            {
+                DataRow row = dt.Rows[0];
+                return new HoaDonDTO
+                {
+                    MaHD = row["MaHD"].ToString(),
+                    MaNV = row["MaNV"].ToString(),
+                    ThoiGianLap = Convert.ToDateTime(row["ThoiGianLap"]),
+                    TongTien = Convert.ToInt32(row["TongTien"]),
+                    TrangThai = row["TrangThai"].ToString()
+                };
+            }
+
+            return null;
+        }
+
+        public bool Insert(HoaDonDTO hoaDon)
+        {
+            try
+            {
+                string query = "INSERT INTO HoaDon (MaHD, MaNV, ThoiGianLap, TongTien, TrangThai) " +
+                              "VALUES (@MaHD, @MaNV, @ThoiGianLap, @TongTien, @TrangThai)";
+
+                SqlParameter[] parameters = {
+                    new SqlParameter("@MaHD", hoaDon.MaHD),
+                    new SqlParameter("@MaNV", hoaDon.MaNV),
+                    new SqlParameter("@ThoiGianLap", hoaDon.ThoiGianLap),
+                    new SqlParameter("@TongTien", hoaDon.TongTien),
+                    new SqlParameter("@TrangThai", hoaDon.TrangThai)
+                };
+
+                int result = DatabaseHelper.ExecuteNonQuery(query, parameters);
+                return result > 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public List<HoaDonDTO> GetByDateRange(DateTime tuNgay, DateTime denNgay)
+        {
+            List<HoaDonDTO> list = new List<HoaDonDTO>();
+
+            string query = "SELECT * FROM HoaDon WHERE CAST(ThoiGianLap AS DATE) BETWEEN @TuNgay AND @DenNgay ORDER BY ThoiGianLap DESC";
+            SqlParameter[] parameters = {
+                new SqlParameter("@TuNgay", tuNgay),
+                new SqlParameter("@DenNgay", denNgay)
+            };
+
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
+
+            foreach (DataRow row in dt.Rows)
+            {
+                HoaDonDTO hd = new HoaDonDTO
+                {
+                    MaHD = row["MaHD"].ToString(),
+                    MaNV = row["MaNV"].ToString(),
+                    ThoiGianLap = Convert.ToDateTime(row["ThoiGianLap"]),
+                    TongTien = Convert.ToInt32(row["TongTien"]),
+                    TrangThai = row["TrangThai"].ToString()
+                };
+                list.Add(hd);
+            }
+
+            return list;
+        }
+
+        public string GenerateNewMaHD()
+        {
+            try
+            {
+                string query = "SELECT TOP 1 MaHD FROM HoaDon ORDER BY MaHD DESC";
+                object result = DatabaseHelper.ExecuteScalar(query);
+
+                if (result != null)
+                {
+                    string lastMa = result.ToString();
+                    int number = int.Parse(lastMa.Substring(2)) + 1;
+                    return "HD" + number.ToString("D2");
+                }
+                else
+                {
+                    return "HD01";
+                }
+            }
+            catch
+            {
+                return "HD01";
+            }
+        }
+    }
+}

@@ -1,0 +1,318 @@
+﻿# QU?N LÝ COFFEE SHOP - WINFORM C# + SQL SERVER + XML
+
+## ?? H??NG D?N CÀI ??T VÀ CH?Y ?NG D?NG
+
+### B??c 1: Chu?n b? môi tr??ng
+
+#### Yêu c?u h? th?ng:
+- **Visual Studio 2017 tr? lên** (khuy?n ngh? Visual Studio 2019/2022)
+- **.NET Framework 4.7.2** tr? lên
+- **SQL Server 2014 tr? lên** (SQL Server 2019 khuy?n ngh?)
+- **SQL Server Management Studio (SSMS)** ?? qu?n lý database
+
+### B??c 2: T?o SQL Server Database
+
+1. M? **SQL Server Management Studio (SSMS)**
+2. K?t n?i ??n SQL Server instance c?a b?n
+3. Ch?y script SQL sau ?? t?o database và d? li?u m?u:
+
+```sql
+/* ================================
+   1. T?O DATABASE
+================================ */
+CREATE DATABASE QLCoffee
+GO
+USE QLCoffee
+GO
+
+/* ================================
+   2. T?O B?NG
+================================ */
+
+-- Lo?i s?n ph?m
+CREATE TABLE LoaiSanPham (
+    MaLoai NVARCHAR(5) PRIMARY KEY,
+    TenLoai NVARCHAR(100),
+    MoTa NVARCHAR(200)
+)
+
+-- S?n ph?m
+CREATE TABLE SanPham (
+    MaSP NVARCHAR(5) PRIMARY KEY,
+    TenSP NVARCHAR(100),
+    Gia INT,
+    MaLoai NVARCHAR(5),
+    TrangThai NVARCHAR(20),
+    FOREIGN KEY (MaLoai) REFERENCES LoaiSanPham(MaLoai)
+)
+
+-- Nhân viên
+CREATE TABLE NhanVien (
+    MaNV NVARCHAR(5) PRIMARY KEY,
+    HoTen NVARCHAR(100),
+    GioiTinh NVARCHAR(10),
+    NgaySinh DATE,
+    SDT NVARCHAR(15),
+    DiaChi NVARCHAR(150),
+    NgayVaoLam DATE
+)
+
+-- Tài kho?n
+CREATE TABLE TaiKhoan (
+    TaiKhoan NVARCHAR(50) PRIMARY KEY,
+    MatKhau NVARCHAR(50),
+    Quyen INT,
+    MaNV NVARCHAR(5),
+    FOREIGN KEY (MaNV) REFERENCES NhanVien(MaNV)
+)
+
+-- Hóa ??n
+CREATE TABLE HoaDon (
+    MaHD NVARCHAR(5) PRIMARY KEY,
+    MaNV NVARCHAR(5),
+    ThoiGianLap DATETIME,
+    TongTien INT,
+    TrangThai NVARCHAR(20),
+    FOREIGN KEY (MaNV) REFERENCES NhanVien(MaNV)
+)
+
+-- Chi ti?t hóa ??n
+CREATE TABLE CTHoaDon (
+    MaHD NVARCHAR(5),
+    MaSP NVARCHAR(5),
+    SoLuong INT,
+    DonGia INT,
+    ThanhTien INT,
+    PRIMARY KEY (MaHD, MaSP),
+    FOREIGN KEY (MaHD) REFERENCES HoaDon(MaHD),
+    FOREIGN KEY (MaSP) REFERENCES SanPham(MaSP)
+)
+
+-- Thông tin c?a hàng
+CREATE TABLE ThongTinCuaHang (
+    TenQuan NVARCHAR(100),
+    DiaChi NVARCHAR(150),
+    SDT NVARCHAR(15),
+    Email NVARCHAR(100)
+)
+
+GO
+
+/* ================================
+   3. INSERT D? LI?U M?U
+================================ */
+
+-- Lo?i s?n ph?m (5 dòng)
+INSERT INTO LoaiSanPham VALUES
+('L01', N'Cà phê', N'Các lo?i cà phê'),
+('L02', N'Trà', N'Các lo?i trà'),
+('L03', N'N??c ép', N'N??c ép trái cây'),
+('L04', N'?á xay', N'N??c ?á xay'),
+('L05', N'Bánh', N'Bánh ng?t')
+
+-- S?n ph?m (10 dòng)
+INSERT INTO SanPham VALUES
+('SP01', N'Cà phê ?en', 20000, 'L01', N'Còn bán'),
+('SP02', N'Cà phê s?a', 25000, 'L01', N'Còn bán'),
+('SP03', N'B?c x?u', 30000, 'L01', N'Còn bán'),
+('SP04', N'Trà ?ào', 35000, 'L02', N'Còn bán'),
+('SP05', N'Trà s?a', 40000, 'L02', N'Còn bán'),
+('SP06', N'N??c cam', 30000, 'L03', N'Còn bán'),
+('SP07', N'N??c ép táo', 32000, 'L03', N'Còn bán'),
+('SP08', N'Matcha ?á xay', 45000, 'L04', N'Còn bán'),
+('SP09', N'Socola ?á xay', 45000, 'L04', N'Còn bán'),
+('SP10', N'Bánh tiramisu', 50000, 'L05', N'Còn bán')
+
+-- Nhân viên (3 dòng)
+INSERT INTO NhanVien VALUES
+('NV01', N'Nguy?n V?n A', N'Nam', '2000-01-01', '0909123456', N'?à N?ng', '2023-01-01'),
+('NV02', N'Tr?n Th? B', N'N?', '2001-05-12', '0912345678', N'?à N?ng', '2023-03-15'),
+('NV03', N'Lê V?n C', N'Nam', '1999-08-20', '0987654321', N'?à N?ng', '2023-06-01')
+
+-- Tài kho?n (3 dòng) - M?t kh?u ?ã ???c mã hóa MD5
+-- M?t kh?u g?c cho t?t c?: 123
+INSERT INTO TaiKhoan VALUES
+('admin', '202CB962AC59075B964B07152D234B70', 1, 'NV01'),
+('nv01', '202CB962AC59075B964B07152D234B70', 0, 'NV02'),
+('nv02', '202CB962AC59075B964B07152D234B70', 0, 'NV03')
+
+-- Hóa ??n (10 dòng)
+INSERT INTO HoaDon VALUES
+('HD01', 'NV02', GETDATE(), 90000, N'?ã thanh toán'),
+('HD02', 'NV03', GETDATE(), 70000, N'?ã thanh toán'),
+('HD03', 'NV02', GETDATE(), 120000, N'?ã thanh toán'),
+('HD04', 'NV01', GETDATE(), 50000, N'?ã thanh toán'),
+('HD05', 'NV01', GETDATE(), 80000, N'?ã thanh toán'),
+('HD06', 'NV02', GETDATE(), 60000, N'?ã thanh toán'),
+('HD07', 'NV03', GETDATE(), 100000, N'?ã thanh toán'),
+('HD08', 'NV01', GETDATE(), 75000, N'?ã thanh toán'),
+('HD09', 'NV02', GETDATE(), 85000, N'?ã thanh toán'),
+('HD10', 'NV03', GETDATE(), 65000, N'?ã thanh toán')
+
+-- Chi ti?t hóa ??n (10 dòng)
+INSERT INTO CTHoaDon VALUES
+('HD01', 'SP01', 2, 20000, 40000),
+('HD01', 'SP04', 1, 35000, 35000),
+('HD02', 'SP02', 1, 25000, 25000),
+('HD02', 'SP10', 1, 50000, 50000),
+('HD03', 'SP05', 2, 40000, 80000),
+('HD04', 'SP03', 1, 30000, 30000),
+('HD05', 'SP06', 2, 30000, 60000),
+('HD06', 'SP07', 2, 32000, 64000),
+('HD07', 'SP08', 2, 45000, 90000),
+('HD08', 'SP09', 1, 45000, 45000)
+
+-- Thông tin c?a hàng (1 dòng)
+INSERT INTO ThongTinCuaHang VALUES
+(N'Coffee XML', N'123 Lê Du?n, ?à N?ng', '0905123456', 'coffeexml@gmail.com')
+
+GO
+```
+
+4. Ki?m tra database ?ã ???c t?o thành công b?ng cách query:
+```sql
+SELECT * FROM TaiKhoan
+SELECT * FROM SanPham
+SELECT * FROM NhanVien
+```
+
+### B??c 3: C?u hình Connection String
+
+M? file `App.config` trong d? án và ch?nh s?a connection string n?u c?n:
+
+```xml
+<connectionStrings>
+    <add name="QLCoffee" 
+         connectionString="Data Source=.;Initial Catalog=QLCoffee;Integrated Security=True" 
+         providerName="System.Data.SqlClient"/>
+</connectionStrings>
+```
+
+**Gi?i thích:**
+- `Data Source=.` : K?t n?i ??n SQL Server local (thay `.` b?ng tên server n?u khác)
+- `Initial Catalog=QLCoffee` : Tên database
+- `Integrated Security=True` : S? d?ng Windows Authentication
+
+**N?u dùng SQL Server Authentication:**
+```xml
+connectionString="Data Source=.;Initial Catalog=QLCoffee;User ID=sa;Password=yourpassword"
+```
+
+### B??c 4: Build và Ch?y ?ng d?ng
+
+1. M? solution trong Visual Studio
+2. Build solution: **Ctrl + Shift + B**
+3. Ch?y ?ng d?ng: **F5**
+
+### B??c 5: ??ng nh?p
+
+**Tài kho?n Admin:**
+- Tên ??ng nh?p: `admin`
+- M?t kh?u: `123`
+- Quy?n: Qu?n lý (có quy?n truy c?p t?t c? ch?c n?ng)
+
+**Tài kho?n Nhân viên:**
+- Tên ??ng nh?p: `nv01` ho?c `nv02`
+- M?t kh?u: `123`
+- Quy?n: Nhân viên (không th? qu?n lý nhân viên và tài kho?n)
+
+## ?? C?U TRÚC D? ÁN
+
+```
+QUANLYCOFFEESHOP/
+?
+??? DTO/                    # Data Transfer Objects
+?   ??? LoaiSanPhamDTO.cs
+?   ??? SanPhamDTO.cs
+?   ??? NhanVienDTO.cs
+?   ??? TaiKhoanDTO.cs
+?   ??? HoaDonDTO.cs
+?   ??? CTHoaDonDTO.cs
+?   ??? ThongTinCuaHangDTO.cs
+?
+??? DAL/                    # Data Access Layer
+?   ??? DatabaseHelper.cs
+?   ??? XMLHelper.cs
+?   ??? LoaiSanPhamDAL.cs
+?   ??? SanPhamDAL.cs
+?   ??? NhanVienDAL.cs
+?   ??? TaiKhoanDAL.cs
+?
+??? BLL/                    # Business Logic Layer (s? thêm)
+?
+??? GUI/                    # Giao di?n Forms
+?   ??? frmLogin.cs
+?   ??? frmMain.cs
+?   ??? frmBanHang.cs
+?   ??? frmSanPham.cs
+?   ??? frmLoaiSanPham.cs
+?   ??? frmNhanVien.cs
+?   ??? frmTaiKhoan.cs
+?   ??? frmHoaDon.cs
+?   ??? frmBaoCao.cs
+?   ??? frmThongTin.cs
+?   ??? frmDoiMatKhau.cs
+?
+??? Utils/                  # Utilities
+    ??? SessionManager.cs
+    ??? Validator.cs
+    ??? Helper.cs
+    ??? Constants.cs
+```
+
+## ?? CH?C N?NG HI?N CÓ
+
+### ? ?ã hoàn thành:
+- [x] K?t n?i SQL Server
+- [x] Form ??ng nh?p v?i MD5 hash
+- [x] Form chính (MDI Parent) v?i menu
+- [x] Session Manager (qu?n lý phiên ??ng nh?p)
+- [x] Phân quy?n (Admin/Nhân viên)
+- [x] C?u trúc 3-layer architecture
+- [x] Backup/Export XML t? SQL Server
+
+### ?? ?ang phát tri?n:
+- [ ] Form qu?n lý s?n ph?m (CRUD ??y ??)
+- [ ] Form qu?n lý lo?i s?n ph?m
+- [ ] Form bán hàng (POS system)
+- [ ] Form qu?n lý hóa ??n
+- [ ] Form báo cáo th?ng kê
+- [ ] Form ??i m?t kh?u
+- [ ] Import XML vào SQL Server
+- [ ] In hóa ??n
+
+## ?? TROUBLESHOOTING
+
+### L?i k?t n?i SQL Server:
+1. Ki?m tra SQL Server ?ã b?t ch?a
+2. Ki?m tra tên instance SQL Server
+3. B?t TCP/IP trong SQL Server Configuration Manager
+4. Ki?m tra firewall
+
+### L?i "Login failed for user":
+- N?u dùng Windows Authentication: ??m b?o user Windows có quy?n truy c?p SQL Server
+- N?u dùng SQL Authentication: Ki?m tra username/password trong connection string
+
+### Không tìm th?y database QLCoffee:
+- Ch?y l?i script t?o database trong SSMS
+- Ki?m tra connection string có ?úng tên database không
+
+## ?? H? TR?
+
+N?u g?p v?n ??, vui lòng:
+1. Ki?m tra file README.md
+2. Xem log l?i trong Output window c?a Visual Studio
+3. Liên h?: coffeexml@gmail.com
+
+## ?? GHI CHÚ
+
+- M?t kh?u m?c ??nh cho t?t c? tài kho?n: **123**
+- M?t kh?u ???c mã hóa MD5 tr??c khi l?u vào database
+- Th? m?c `Backup/` s? ???c t?o t? ??ng khi xu?t XML
+- D? li?u m?u ?ã ???c chu?n b? s?n trong script SQL
+
+---
+
+**Phát tri?n b?i:** QUANLYCOFFEESHOP Team  
+**Phiên b?n:** 1.0  
+**Ngày:** 2025

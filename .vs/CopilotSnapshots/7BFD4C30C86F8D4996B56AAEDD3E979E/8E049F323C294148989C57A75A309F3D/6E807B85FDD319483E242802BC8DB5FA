@@ -1,0 +1,12 @@
+﻿using System.Windows.Forms;
+
+namespace QUANLYCOFFEESHOP.GUI
+{
+    public partial class frmHoaDon : Form
+    {
+        public frmHoaDon()
+        {
+            InitializeComponent();
+        }
+    }
+}

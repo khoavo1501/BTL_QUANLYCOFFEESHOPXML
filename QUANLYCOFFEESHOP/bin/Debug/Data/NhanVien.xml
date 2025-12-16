@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<NhanViens>
+  <NhanVien>
+    <MaNV>NV01</MaNV>
+    <HoTen>Nguyễn Văn A</HoTen>
+    <GioiTinh>Nam</GioiTinh>
+    <NgaySinh>2000-01-01T00:00:00</NgaySinh>
+    <SDT>0909123456</SDT>
+    <DiaChi>123 Lê Duẩn, Đà Nẵng</DiaChi>
+    <NgayVaoLam>2023-01-01T00:00:00</NgayVaoLam>
+  </NhanVien>
+  <NhanVien>
+    <MaNV>NV02</MaNV>
+    <HoTen>Trần Thị B</HoTen>
+    <GioiTinh>Nữ</GioiTinh>
+    <NgaySinh>2001-05-12T00:00:00</NgaySinh>
+    <SDT>0912345678</SDT>
+    <DiaChi>456 Trần Phú, Đà Nẵng</DiaChi>
+    <NgayVaoLam>2023-03-15T00:00:00</NgayVaoLam>
+  </NhanVien>
+  <NhanVien>
+    <MaNV>NV03</MaNV>
+    <HoTen>Lê Văn C</HoTen>
+    <GioiTinh>Nam</GioiTinh>
+    <NgaySinh>1999-08-20T00:00:00</NgaySinh>
+    <SDT>0987654321</SDT>
+    <DiaChi>789 Nguyễn Huệ, Đà Nẵng</DiaChi>
+    <NgayVaoLam>2023-06-01T00:00:00</NgayVaoLam>
+  </NhanVien>
+</NhanViens>

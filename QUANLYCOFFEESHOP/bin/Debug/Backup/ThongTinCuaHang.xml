@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ThongTinCuaHangs>
+  <ThongTinCuaHang>
+    <TenQuan>Coffee XML</TenQuan>
+    <DiaChi>123 Lê Duẩn, Đà Nẵng</DiaChi>
+    <SDT>0905123456</SDT>
+    <Email>coffeexml@gmail.com</Email>
+  </ThongTinCuaHang>
+</ThongTinCuaHangs>

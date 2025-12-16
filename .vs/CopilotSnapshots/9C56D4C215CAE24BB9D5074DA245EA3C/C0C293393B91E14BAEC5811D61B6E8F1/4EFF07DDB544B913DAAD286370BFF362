@@ -1,0 +1,176 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
+using QUANLYCOFFEESHOP.DTO;
+
+namespace QUANLYCOFFEESHOP.DAL
+{
+    public class HoaDonDAL
+    {
+        private const string FILE_NAME = "HoaDon.xml";
+        private const string ROOT_NAME = "HoaDons";
+        private const string ELEMENT_NAME = "HoaDon";
+
+        public List<HoaDonDTO> GetAll()
+        {
+            List<HoaDonDTO> list = new List<HoaDonDTO>();
+
+            try
+            {
+                XDocument doc = XMLHelper.LoadOrCreateXML(FILE_NAME, ROOT_NAME);
+
+                var sortedElements = doc.Root.Elements(ELEMENT_NAME)
+                    .OrderByDescending(x => DateTime.Parse(x.Element("ThoiGianLap")?.Value ?? DateTime.Now.ToString()));
+
+                foreach (XElement element in sortedElements)
+                {
+                    HoaDonDTO hd = new HoaDonDTO
+                    {
+                        MaHD = element.Element("MaHD")?.Value ?? "",
+                        MaNV = element.Element("MaNV")?.Value ?? "",
+                        ThoiGianLap = DateTime.Parse(element.Element("ThoiGianLap")?.Value ?? DateTime.Now.ToString()),
+                        TongTien = int.Parse(element.Element("TongTien")?.Value ?? "0"),
+                        TrangThai = element.Element("TrangThai")?.Value ?? ""
+                    };
+                    list.Add(hd);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi đọc dữ liệu hóa đơn: " + ex.Message);
+            }
+
+            return list;
+        }
+
+        public HoaDonDTO GetByID(string maHD)
+        {
+            try
+            {
+                XDocument doc = XMLHelper.LoadOrCreateXML(FILE_NAME, ROOT_NAME);
+
+                XElement element = doc.Root.Elements(ELEMENT_NAME)
+                    .FirstOrDefault(x => x.Element("MaHD")?.Value == maHD);
+
+                if (element != null)
+                {
+                    return new HoaDonDTO
+                    {
+                        MaHD = element.Element("MaHD")?.Value ?? "",
+                        MaNV = element.Element("MaNV")?.Value ?? "",
+                        ThoiGianLap = DateTime.Parse(element.Element("ThoiGianLap")?.Value ?? DateTime.Now.ToString()),
+                        TongTien = int.Parse(element.Element("TongTien")?.Value ?? "0"),
+                        TrangThai = element.Element("TrangThai")?.Value ?? ""
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi tìm hóa đơn: " + ex.Message);
+            }
+
+            return null;
+        }
+
+        public bool Insert(HoaDonDTO hoaDon)
+        {
+            try
+            {
+                XDocument doc = XMLHelper.LoadOrCreateXML(FILE_NAME, ROOT_NAME);
+
+                if (doc.Root.Elements(ELEMENT_NAME).Any(x => x.Element("MaHD")?.Value == hoaDon.MaHD))
+                {
+                    System.Windows.Forms.MessageBox.Show("Mã hóa đơn đã tồn tại!");
+                    return false;
+                }
+
+                XElement newElement = new XElement(ELEMENT_NAME,
+                    new XElement("MaHD", hoaDon.MaHD),
+                    new XElement("MaNV", hoaDon.MaNV),
+                    new XElement("ThoiGianLap", hoaDon.ThoiGianLap.ToString("yyyy-MM-dd HH:mm:ss")),
+                    new XElement("TongTien", hoaDon.TongTien),
+                    new XElement("TrangThai", hoaDon.TrangThai)
+                );
+
+                doc.Root.Add(newElement);
+                
+                bool saved = XMLHelper.SaveXML(doc, FILE_NAME);
+                if (saved)
+                {
+                    XMLHelper.BackupToDatabase("HoaDon", doc);
+                }
+                return saved;
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi thêm hóa đơn: " + ex.Message);
+                return false;
+            }
+        }
+
+        public List<HoaDonDTO> GetByDateRange(DateTime tuNgay, DateTime denNgay)
+        {
+            List<HoaDonDTO> list = new List<HoaDonDTO>();
+
+            try
+            {
+                XDocument doc = XMLHelper.LoadOrCreateXML(FILE_NAME, ROOT_NAME);
+
+                var filteredElements = doc.Root.Elements(ELEMENT_NAME)
+                    .Where(x => 
+                    {
+                        DateTime thoiGian = DateTime.Parse(x.Element("ThoiGianLap")?.Value ?? DateTime.Now.ToString());
+                        return thoiGian.Date >= tuNgay.Date && thoiGian.Date <= denNgay.Date;
+                    })
+                    .OrderByDescending(x => DateTime.Parse(x.Element("ThoiGianLap")?.Value ?? DateTime.Now.ToString()));
+
+                foreach (XElement element in filteredElements)
+                {
+                    HoaDonDTO hd = new HoaDonDTO
+                    {
+                        MaHD = element.Element("MaHD")?.Value ?? "",
+                        MaNV = element.Element("MaNV")?.Value ?? "",
+                        ThoiGianLap = DateTime.Parse(element.Element("ThoiGianLap")?.Value ?? DateTime.Now.ToString()),
+                        TongTien = int.Parse(element.Element("TongTien")?.Value ?? "0"),
+                        TrangThai = element.Element("TrangThai")?.Value ?? ""
+                    };
+                    list.Add(hd);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi lấy hóa đơn theo ngày: " + ex.Message);
+            }
+
+            return list;
+        }
+
+        public string GenerateNewMaHD()
+        {
+            try
+            {
+                XDocument doc = XMLHelper.LoadOrCreateXML(FILE_NAME, ROOT_NAME);
+
+                var lastElement = doc.Root.Elements(ELEMENT_NAME)
+                    .OrderByDescending(x => x.Element("MaHD")?.Value)
+                    .FirstOrDefault();
+
+                if (lastElement != null)
+                {
+                    string lastMa = lastElement.Element("MaHD")?.Value ?? "HD00";
+                    int number = int.Parse(lastMa.Substring(2)) + 1;
+                    return "HD" + number.ToString("D3");
+                }
+                else
+                {
+                    return "HD001";
+                }
+            }
+            catch
+            {
+                return "HD001";
+            }
+        }
+    }
+}

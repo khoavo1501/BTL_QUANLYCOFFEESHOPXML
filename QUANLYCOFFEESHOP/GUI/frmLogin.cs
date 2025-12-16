@@ -1,0 +1,100 @@
+﻿using System;
+using System.Windows.Forms;
+using QUANLYCOFFEESHOP.DAL;
+using QUANLYCOFFEESHOP.DTO;
+using QUANLYCOFFEESHOP.Utils;
+
+namespace QUANLYCOFFEESHOP.GUI
+{
+    public partial class frmLogin : Form
+    {
+        private TaiKhoanDAL taiKhoanDAL = new TaiKhoanDAL();
+        private NhanVienDAL nhanVienDAL = new NhanVienDAL();
+
+        public frmLogin()
+        {
+            InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterScreen;
+        }
+
+        private void frmLogin_Load(object sender, EventArgs e)
+        {
+            if (!DatabaseHelper.TestConnection())
+            {
+                MessageBox.Show("Không thể kết nối đến SQL Server!\nVui lòng kiểm tra lại cấu hình.", 
+                    "Lỗi kết nối", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Application.Exit();
+            }
+        }
+
+        private void btnLogin_Click(object sender, EventArgs e)
+        {
+            string taiKhoan = txtUsername.Text.Trim();
+            string matKhau = txtPassword.Text.Trim();
+
+            if (string.IsNullOrEmpty(taiKhoan) || string.IsNullOrEmpty(matKhau))
+            {
+                MessageBox.Show("Vui lòng nhập đầy đủ thông tin!", "Thông báo", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string hashedPassword = Helper.MD5Hash(matKhau);
+
+            TaiKhoanDTO user = taiKhoanDAL.CheckLogin(taiKhoan, hashedPassword);
+
+            if (user != null)
+            {
+                SessionManager.CurrentUser = user;
+                SessionManager.CurrentEmployee = nhanVienDAL.GetByID(user.MaNV);
+
+                MessageBox.Show("Đăng nhập thành công!", "Thông báo", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                this.Hide();
+                frmMain mainForm = new frmMain();
+                mainForm.ShowDialog();
+                
+                // Khi đóng frmMain (đăng xuất), hiển thị lại form Login
+                this.Show();
+                txtPassword.Clear();
+                txtUsername.Clear();
+                txtUsername.Focus();
+            }
+            else
+            {
+                MessageBox.Show("Tên đăng nhập hoặc mật khẩu không đúng!", "Lỗi", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Bạn có chắc muốn thoát?", "Xác nhận", 
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            
+            if (result == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+        }
+
+        private void txtPassword_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                btnLogin_Click(sender, e);
+            }
+        }
+
+        private void lblSubTitle_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+    }
+}

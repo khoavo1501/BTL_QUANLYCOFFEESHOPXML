@@ -1,0 +1,281 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
+using QUANLYCOFFEESHOP.DTO;
+
+namespace QUANLYCOFFEESHOP.DAL
+{
+    public class SanPhamDAL
+    {
+        private const string FILE_NAME = "SanPham.xml";
+        private const string ROOT_NAME = "SanPhams";
+        private const string ELEMENT_NAME = "SanPham";
+
+        public List<SanPhamDTO> GetAll()
+        {
+            List<SanPhamDTO> list = new List<SanPhamDTO>();
+
+            try
+            {
+                XDocument doc = XMLHelper.LoadOrCreateXML(FILE_NAME, ROOT_NAME);
+
+                foreach (XElement element in doc.Root.Elements(ELEMENT_NAME))
+                {
+                    SanPhamDTO sp = new SanPhamDTO
+                    {
+                        MaSP = element.Element("MaSP")?.Value ?? "",
+                        TenSP = element.Element("TenSP")?.Value ?? "",
+                        Gia = int.Parse(element.Element("Gia")?.Value ?? "0"),
+                        MaLoai = element.Element("MaLoai")?.Value ?? "",
+                        TrangThai = element.Element("TrangThai")?.Value ?? "",
+                        HinhAnh = element.Element("HinhAnh")?.Value ?? ""
+                    };
+                    list.Add(sp);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("L?i ??c d? li?u s?n ph?m: " + ex.Message);
+            }
+
+            return list;
+        }
+
+        public SanPhamDTO GetByID(string maSP)
+        {
+            try
+            {
+                XDocument doc = XMLHelper.LoadOrCreateXML(FILE_NAME, ROOT_NAME);
+
+                XElement element = doc.Root.Elements(ELEMENT_NAME)
+                    .FirstOrDefault(x => x.Element("MaSP")?.Value == maSP);
+
+                if (element != null)
+                {
+                    return new SanPhamDTO
+                    {
+                        MaSP = element.Element("MaSP")?.Value ?? "",
+                        TenSP = element.Element("TenSP")?.Value ?? "",
+                        Gia = int.Parse(element.Element("Gia")?.Value ?? "0"),
+                        MaLoai = element.Element("MaLoai")?.Value ?? "",
+                        TrangThai = element.Element("TrangThai")?.Value ?? "",
+                        HinhAnh = element.Element("HinhAnh")?.Value ?? ""
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("L?i tìm s?n ph?m: " + ex.Message);
+            }
+
+            return null;
+        }
+
+        public bool Insert(SanPhamDTO sanPham)
+        {
+            try
+            {
+                XDocument doc = XMLHelper.LoadOrCreateXML(FILE_NAME, ROOT_NAME);
+
+                if (doc.Root.Elements(ELEMENT_NAME).Any(x => x.Element("MaSP")?.Value == sanPham.MaSP))
+                {
+                    System.Windows.Forms.MessageBox.Show("Mã s?n ph?m ?ã t?n t?i!");
+                    return false;
+                }
+
+                XElement newElement = new XElement(ELEMENT_NAME,
+                    new XElement("MaSP", sanPham.MaSP),
+                    new XElement("TenSP", sanPham.TenSP),
+                    new XElement("Gia", sanPham.Gia),
+                    new XElement("MaLoai", sanPham.MaLoai),
+                    new XElement("TrangThai", sanPham.TrangThai),
+                    new XElement("HinhAnh", sanPham.HinhAnh ?? "")
+                );
+
+                doc.Root.Add(newElement);
+                
+                bool saved = XMLHelper.SaveXML(doc, FILE_NAME);
+                if (saved)
+                {
+                    XMLHelper.BackupToDatabase("SanPham", doc);
+                }
+                return saved;
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("L?i thêm s?n ph?m: " + ex.Message);
+                return false;
+            }
+        }
+
+        public bool Update(SanPhamDTO sanPham)
+        {
+            try
+            {
+                XDocument doc = XMLHelper.LoadOrCreateXML(FILE_NAME, ROOT_NAME);
+
+                XElement element = doc.Root.Elements(ELEMENT_NAME)
+                    .FirstOrDefault(x => x.Element("MaSP")?.Value == sanPham.MaSP);
+
+                if (element != null)
+                {
+                    element.Element("TenSP").Value = sanPham.TenSP;
+                    element.Element("Gia").Value = sanPham.Gia.ToString();
+                    element.Element("MaLoai").Value = sanPham.MaLoai;
+                    element.Element("TrangThai").Value = sanPham.TrangThai;
+                    
+                    if (element.Element("HinhAnh") != null)
+                        element.Element("HinhAnh").Value = sanPham.HinhAnh ?? "";
+                    else
+                        element.Add(new XElement("HinhAnh", sanPham.HinhAnh ?? ""));
+
+                    bool saved = XMLHelper.SaveXML(doc, FILE_NAME);
+                    if (saved)
+                    {
+                        XMLHelper.BackupToDatabase("SanPham", doc);
+                    }
+                    return saved;
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("L?i c?p nh?t s?n ph?m: " + ex.Message);
+                return false;
+            }
+        }
+
+        public bool Delete(string maSP)
+        {
+            try
+            {
+                XDocument doc = XMLHelper.LoadOrCreateXML(FILE_NAME, ROOT_NAME);
+
+                XElement element = doc.Root.Elements(ELEMENT_NAME)
+                    .FirstOrDefault(x => x.Element("MaSP")?.Value == maSP);
+
+                if (element != null)
+                {
+                    element.Remove();
+                    
+                    bool saved = XMLHelper.SaveXML(doc, FILE_NAME);
+                    if (saved)
+                    {
+                        XMLHelper.BackupToDatabase("SanPham", doc);
+                    }
+                    return saved;
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("L?i xóa s?n ph?m: " + ex.Message);
+                return false;
+            }
+        }
+
+        public List<SanPhamDTO> Search(string keyword)
+        {
+            List<SanPhamDTO> list = new List<SanPhamDTO>();
+
+            try
+            {
+                XDocument doc = XMLHelper.LoadOrCreateXML(FILE_NAME, ROOT_NAME);
+
+                var elements = doc.Root.Elements(ELEMENT_NAME)
+                    .Where(x => x.Element("TenSP")?.Value.ToLower().Contains(keyword.ToLower()) == true ||
+                               x.Element("MaSP")?.Value.ToLower().Contains(keyword.ToLower()) == true);
+
+                foreach (XElement element in elements)
+                {
+                    SanPhamDTO sp = new SanPhamDTO
+                    {
+                        MaSP = element.Element("MaSP")?.Value ?? "",
+                        TenSP = element.Element("TenSP")?.Value ?? "",
+                        Gia = int.Parse(element.Element("Gia")?.Value ?? "0"),
+                        MaLoai = element.Element("MaLoai")?.Value ?? "",
+                        TrangThai = element.Element("TrangThai")?.Value ?? "",
+                        HinhAnh = element.Element("HinhAnh")?.Value ?? ""
+                    };
+                    list.Add(sp);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("L?i tìm ki?m s?n ph?m: " + ex.Message);
+            }
+
+            return list;
+        }
+
+        public List<SanPhamDTO> GetByCategory(string maLoai)
+        {
+            List<SanPhamDTO> list = new List<SanPhamDTO>();
+
+            try
+            {
+                XDocument doc = XMLHelper.LoadOrCreateXML(FILE_NAME, ROOT_NAME);
+
+                var elements = doc.Root.Elements(ELEMENT_NAME)
+                    .Where(x => x.Element("MaLoai")?.Value == maLoai && 
+                               x.Element("TrangThai")?.Value == "Còn bán");
+
+                foreach (XElement element in elements)
+                {
+                    SanPhamDTO sp = new SanPhamDTO
+                    {
+                        MaSP = element.Element("MaSP")?.Value ?? "",
+                        TenSP = element.Element("TenSP")?.Value ?? "",
+                        Gia = int.Parse(element.Element("Gia")?.Value ?? "0"),
+                        MaLoai = element.Element("MaLoai")?.Value ?? "",
+                        TrangThai = element.Element("TrangThai")?.Value ?? "",
+                        HinhAnh = element.Element("HinhAnh")?.Value ?? ""
+                    };
+                    list.Add(sp);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("L?i l?y s?n ph?m theo lo?i: " + ex.Message);
+            }
+
+            return list;
+        }
+
+        public List<SanPhamDTO> GetAvailableProducts()
+        {
+            List<SanPhamDTO> list = new List<SanPhamDTO>();
+
+            try
+            {
+                XDocument doc = XMLHelper.LoadOrCreateXML(FILE_NAME, ROOT_NAME);
+
+                var elements = doc.Root.Elements(ELEMENT_NAME)
+                    .Where(x => x.Element("TrangThai")?.Value == "Còn bán");
+
+                foreach (XElement element in elements)
+                {
+                    SanPhamDTO sp = new SanPhamDTO
+                    {
+                        MaSP = element.Element("MaSP")?.Value ?? "",
+                        TenSP = element.Element("TenSP")?.Value ?? "",
+                        Gia = int.Parse(element.Element("Gia")?.Value ?? "0"),
+                        MaLoai = element.Element("MaLoai")?.Value ?? "",
+                        TrangThai = element.Element("TrangThai")?.Value ?? "",
+                        HinhAnh = element.Element("HinhAnh")?.Value ?? ""
+                    };
+                    list.Add(sp);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("L?i l?y s?n ph?m còn bán: " + ex.Message);
+            }
+
+            return list;
+        }
+    }
+}

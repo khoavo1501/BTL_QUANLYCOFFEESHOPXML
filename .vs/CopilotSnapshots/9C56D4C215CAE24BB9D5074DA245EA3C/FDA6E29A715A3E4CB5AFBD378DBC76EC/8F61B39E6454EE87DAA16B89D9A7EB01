@@ -1,0 +1,212 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
+using QUANLYCOFFEESHOP.DTO;
+
+namespace QUANLYCOFFEESHOP.DAL
+{
+    public class SanPhamDAL
+    {
+        private const string FILE_NAME = "SanPham.xml";
+        private const string ROOT_NAME = "SanPhams";
+        private const string ELEMENT_NAME = "SanPham";
+
+        public List<SanPhamDTO> GetAll()
+        {
+            List<SanPhamDTO> list = new List<SanPhamDTO>();
+
+            try
+            {
+                XDocument doc = XMLHelper.LoadOrCreateXML(FILE_NAME, ROOT_NAME);
+
+                foreach (XElement element in doc.Root.Elements(ELEMENT_NAME))
+                {
+                    SanPhamDTO sp = new SanPhamDTO
+                    {
+                        MaSP = element.Element("MaSP")?.Value ?? "",
+                        TenSP = element.Element("TenSP")?.Value ?? "",
+                        Gia = int.Parse(element.Element("Gia")?.Value ?? "0"),
+                        MaLoai = element.Element("MaLoai")?.Value ?? "",
+                        TrangThai = element.Element("TrangThai")?.Value ?? ""
+                    };
+                    list.Add(sp);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi đọc dữ liệu sản phẩm: " + ex.Message);
+            }
+
+            return list;
+        }
+
+        public SanPhamDTO GetByID(string maSP)
+        {
+            string query = "SELECT * FROM SanPham WHERE MaSP = @MaSP";
+            SqlParameter[] parameters = {
+                new SqlParameter("@MaSP", maSP)
+            };
+
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
+
+            if (dt.Rows.Count > 0)
+            {
+                DataRow row = dt.Rows[0];
+                return new SanPhamDTO
+                {
+                    MaSP = row["MaSP"].ToString(),
+                    TenSP = row["TenSP"].ToString(),
+                    Gia = Convert.ToInt32(row["Gia"]),
+                    MaLoai = row["MaLoai"].ToString(),
+                    TrangThai = row["TrangThai"].ToString()
+                };
+            }
+
+            return null;
+        }
+
+        public bool Insert(SanPhamDTO sanPham)
+        {
+            try
+            {
+                string query = "INSERT INTO SanPham (MaSP, TenSP, Gia, MaLoai, TrangThai) " +
+                              "VALUES (@MaSP, @TenSP, @Gia, @MaLoai, @TrangThai)";
+
+                SqlParameter[] parameters = {
+                    new SqlParameter("@MaSP", sanPham.MaSP),
+                    new SqlParameter("@TenSP", sanPham.TenSP),
+                    new SqlParameter("@Gia", sanPham.Gia),
+                    new SqlParameter("@MaLoai", sanPham.MaLoai),
+                    new SqlParameter("@TrangThai", sanPham.TrangThai)
+                };
+
+                int result = DatabaseHelper.ExecuteNonQuery(query, parameters);
+                return result > 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool Update(SanPhamDTO sanPham)
+        {
+            try
+            {
+                string query = "UPDATE SanPham SET TenSP = @TenSP, Gia = @Gia, " +
+                              "MaLoai = @MaLoai, TrangThai = @TrangThai WHERE MaSP = @MaSP";
+
+                SqlParameter[] parameters = {
+                    new SqlParameter("@MaSP", sanPham.MaSP),
+                    new SqlParameter("@TenSP", sanPham.TenSP),
+                    new SqlParameter("@Gia", sanPham.Gia),
+                    new SqlParameter("@MaLoai", sanPham.MaLoai),
+                    new SqlParameter("@TrangThai", sanPham.TrangThai)
+                };
+
+                int result = DatabaseHelper.ExecuteNonQuery(query, parameters);
+                return result > 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool Delete(string maSP)
+        {
+            try
+            {
+                string query = "DELETE FROM SanPham WHERE MaSP = @MaSP";
+                SqlParameter[] parameters = {
+                    new SqlParameter("@MaSP", maSP)
+                };
+
+                int result = DatabaseHelper.ExecuteNonQuery(query, parameters);
+                return result > 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public List<SanPhamDTO> Search(string keyword)
+        {
+            List<SanPhamDTO> list = new List<SanPhamDTO>();
+
+            string query = "SELECT * FROM SanPham WHERE TenSP LIKE @Keyword OR MaSP LIKE @Keyword";
+            SqlParameter[] parameters = {
+                new SqlParameter("@Keyword", "%" + keyword + "%")
+            };
+
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
+
+            foreach (DataRow row in dt.Rows)
+            {
+                SanPhamDTO sp = new SanPhamDTO
+                {
+                    MaSP = row["MaSP"].ToString(),
+                    TenSP = row["TenSP"].ToString(),
+                    Gia = Convert.ToInt32(row["Gia"]),
+                    MaLoai = row["MaLoai"].ToString(),
+                    TrangThai = row["TrangThai"].ToString()
+                };
+                list.Add(sp);
+            }
+
+            return list;
+        }
+
+        public List<SanPhamDTO> GetByCategory(string maLoai)
+        {
+            List<SanPhamDTO> list = new List<SanPhamDTO>();
+
+            string query = "SELECT * FROM SanPham WHERE MaLoai = @MaLoai AND TrangThai = N'Còn bán'";
+            SqlParameter[] parameters = {
+                new SqlParameter("@MaLoai", maLoai)
+            };
+
+            DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
+
+            foreach (DataRow row in dt.Rows)
+            {
+                SanPhamDTO sp = new SanPhamDTO
+                {
+                    MaSP = row["MaSP"].ToString(),
+                    TenSP = row["TenSP"].ToString(),
+                    Gia = Convert.ToInt32(row["Gia"]),
+                    MaLoai = row["MaLoai"].ToString(),
+                    TrangThai = row["TrangThai"].ToString()
+                };
+                list.Add(sp);
+            }
+
+            return list;
+        }
+
+        public List<SanPhamDTO> GetAvailableProducts()
+        {
+            List<SanPhamDTO> list = new List<SanPhamDTO>();
+
+            string query = "SELECT * FROM SanPham WHERE TrangThai = N'Còn bán'";
+            DataTable dt = DatabaseHelper.ExecuteQuery(query);
+
+            foreach (DataRow row in dt.Rows)
+            {
+                SanPhamDTO sp = new SanPhamDTO
+                {
+                    MaSP = row["MaSP"].ToString(),
+                    TenSP = row["TenSP"].ToString(),
+                    Gia = Convert.ToInt32(row["Gia"]),
+                    MaLoai = row["MaLoai"].ToString(),
+                    TrangThai = row["TrangThai"].ToString()
+                };
+                list.Add(sp);
+            }
+
+            return list;
+        }
+    }
+}

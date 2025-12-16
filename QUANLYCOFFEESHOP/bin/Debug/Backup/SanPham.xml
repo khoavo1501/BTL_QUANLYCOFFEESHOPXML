@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SanPhams>
+  <SanPham>
+    <MaSP>SP01</MaSP>
+    <TenSP>Cà phê đen</TenSP>
+    <Gia>20000</Gia>
+    <MaLoai>L01</MaLoai>
+    <TrangThai>Còn bán</TrangThai>
+  </SanPham>
+  <SanPham>
+    <MaSP>SP02</MaSP>
+    <TenSP>Cà phê sữa</TenSP>
+    <Gia>25000</Gia>
+    <MaLoai>L01</MaLoai>
+    <TrangThai>Còn bán</TrangThai>
+  </SanPham>
+  <SanPham>
+    <MaSP>SP03</MaSP>
+    <TenSP>Bạc xỉu</TenSP>
+    <Gia>30000</Gia>
+    <MaLoai>L01</MaLoai>
+    <TrangThai>Còn bán</TrangThai>
+  </SanPham>
+  <SanPham>
+    <MaSP>SP04</MaSP>
+    <TenSP>Trà đào</TenSP>
+    <Gia>35000</Gia>
+    <MaLoai>L02</MaLoai>
+    <TrangThai>Còn bán</TrangThai>
+  </SanPham>
+  <SanPham>
+    <MaSP>SP05</MaSP>
+    <TenSP>Trà sữa</TenSP>
+    <Gia>40000</Gia>
+    <MaLoai>L02</MaLoai>
+    <TrangThai>Còn bán</TrangThai>
+  </SanPham>
+  <SanPham>
+    <MaSP>SP06</MaSP>
+    <TenSP>Nước cam</TenSP>
+    <Gia>30000</Gia>
+    <MaLoai>L03</MaLoai>
+    <TrangThai>Còn bán</TrangThai>
+  </SanPham>
+  <SanPham>
+    <MaSP>SP07</MaSP>
+    <TenSP>Nước ép táo</TenSP>
+    <Gia>32000</Gia>
+    <MaLoai>L03</MaLoai>
+    <TrangThai>Còn bán</TrangThai>
+  </SanPham>
+  <SanPham>
+    <MaSP>SP08</MaSP>
+    <TenSP>Matcha đá xay</TenSP>
+    <Gia>45000</Gia>
+    <MaLoai>L04</MaLoai>
+    <TrangThai>Còn bán</TrangThai>
+  </SanPham>
+  <SanPham>
+    <MaSP>SP09</MaSP>
+    <TenSP>Socola đá xay</TenSP>
+    <Gia>45000</Gia>
+    <MaLoai>L04</MaLoai>
+    <TrangThai>Còn bán</TrangThai>
+  </SanPham>
+  <SanPham>
+    <MaSP>SP10</MaSP>
+    <TenSP>Bánh tiramisu</TenSP>
+    <Gia>50000</Gia>
+    <MaLoai>L05</MaLoai>
+    <TrangThai>Còn bán</TrangThai>
+  </SanPham>
+</SanPhams>

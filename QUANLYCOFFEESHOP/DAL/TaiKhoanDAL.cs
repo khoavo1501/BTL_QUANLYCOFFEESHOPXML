@@ -1,0 +1,198 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
+using QUANLYCOFFEESHOP.DTO;
+
+namespace QUANLYCOFFEESHOP.DAL
+{
+    public class TaiKhoanDAL
+    {
+        private const string FILE_NAME = "TaiKhoan.xml";
+        private const string ROOT_NAME = "TaiKhoans";
+        private const string ELEMENT_NAME = "TaiKhoan";
+        public TaiKhoanDTO CheckLogin(string taiKhoan, string matKhau)
+        {
+            try
+            {
+                XDocument doc = XMLHelper.LoadOrCreateXML(FILE_NAME, ROOT_NAME);
+
+                XElement element = doc.Root.Elements(ELEMENT_NAME)
+                    .FirstOrDefault(x => x.Element("TaiKhoan")?.Value == taiKhoan && 
+                                        x.Element("MatKhau")?.Value == matKhau);
+
+                if (element != null)
+                {
+                    return new TaiKhoanDTO
+                    {
+                        TaiKhoan = element.Element("TaiKhoan")?.Value ?? "",
+                        MatKhau = element.Element("MatKhau")?.Value ?? "",
+                        Quyen = int.Parse(element.Element("Quyen")?.Value ?? "0"),
+                        MaNV = element.Element("MaNV")?.Value ?? ""
+                    };
+                }
+
+                return null;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public List<TaiKhoanDTO> GetAll()
+        {
+            List<TaiKhoanDTO> list = new List<TaiKhoanDTO>();
+
+            try
+            {
+                XDocument doc = XMLHelper.LoadOrCreateXML(FILE_NAME, ROOT_NAME);
+
+                foreach (XElement element in doc.Root.Elements(ELEMENT_NAME))
+                {
+                    TaiKhoanDTO tk = new TaiKhoanDTO
+                    {
+                        TaiKhoan = element.Element("TaiKhoan")?.Value ?? "",
+                        MatKhau = element.Element("MatKhau")?.Value ?? "",
+                        Quyen = int.Parse(element.Element("Quyen")?.Value ?? "0"),
+                        MaNV = element.Element("MaNV")?.Value ?? ""
+                    };
+                    list.Add(tk);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("L?i ??c d? li?u tài kho?n: " + ex.Message);
+            }
+
+            return list;
+        }
+
+        public bool Insert(TaiKhoanDTO taiKhoan)
+        {
+            try
+            {
+                XDocument doc = XMLHelper.LoadOrCreateXML(FILE_NAME, ROOT_NAME);
+
+                if (doc.Root.Elements(ELEMENT_NAME).Any(x => x.Element("TaiKhoan")?.Value == taiKhoan.TaiKhoan))
+                {
+                    System.Windows.Forms.MessageBox.Show("Tài kho?n ?ã t?n t?i!");
+                    return false;
+                }
+
+                XElement newElement = new XElement(ELEMENT_NAME,
+                    new XElement("TaiKhoan", taiKhoan.TaiKhoan),
+                    new XElement("MatKhau", taiKhoan.MatKhau),
+                    new XElement("Quyen", taiKhoan.Quyen),
+                    new XElement("MaNV", taiKhoan.MaNV)
+                );
+
+                doc.Root.Add(newElement);
+                
+                bool saved = XMLHelper.SaveXML(doc, FILE_NAME);
+                if (saved)
+                {
+                    XMLHelper.BackupToDatabase("TaiKhoan", doc);
+                }
+                return saved;
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("L?i thêm tài kho?n: " + ex.Message);
+                return false;
+            }
+        }
+
+        public bool Update(TaiKhoanDTO taiKhoan)
+        {
+            try
+            {
+                XDocument doc = XMLHelper.LoadOrCreateXML(FILE_NAME, ROOT_NAME);
+
+                XElement element = doc.Root.Elements(ELEMENT_NAME)
+                    .FirstOrDefault(x => x.Element("TaiKhoan")?.Value == taiKhoan.TaiKhoan);
+
+                if (element != null)
+                {
+                    element.Element("MatKhau").Value = taiKhoan.MatKhau;
+                    element.Element("Quyen").Value = taiKhoan.Quyen.ToString();
+                    element.Element("MaNV").Value = taiKhoan.MaNV;
+
+                    bool saved = XMLHelper.SaveXML(doc, FILE_NAME);
+                    if (saved)
+                    {
+                        XMLHelper.BackupToDatabase("TaiKhoan", doc);
+                    }
+                    return saved;
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("L?i c?p nh?t tài kho?n: " + ex.Message);
+                return false;
+            }
+        }
+
+        public bool Delete(string taiKhoan)
+        {
+            try
+            {
+                XDocument doc = XMLHelper.LoadOrCreateXML(FILE_NAME, ROOT_NAME);
+
+                XElement element = doc.Root.Elements(ELEMENT_NAME)
+                    .FirstOrDefault(x => x.Element("TaiKhoan")?.Value == taiKhoan);
+
+                if (element != null)
+                {
+                    element.Remove();
+                    
+                    bool saved = XMLHelper.SaveXML(doc, FILE_NAME);
+                    if (saved)
+                    {
+                        XMLHelper.BackupToDatabase("TaiKhoan", doc);
+                    }
+                    return saved;
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("L?i xóa tài kho?n: " + ex.Message);
+                return false;
+            }
+        }
+
+        public bool ChangePassword(string taiKhoan, string matKhauMoi)
+        {
+            try
+            {
+                XDocument doc = XMLHelper.LoadOrCreateXML(FILE_NAME, ROOT_NAME);
+
+                XElement element = doc.Root.Elements(ELEMENT_NAME)
+                    .FirstOrDefault(x => x.Element("TaiKhoan")?.Value == taiKhoan);
+
+                if (element != null)
+                {
+                    element.Element("MatKhau").Value = matKhauMoi;
+                    
+                    bool saved = XMLHelper.SaveXML(doc, FILE_NAME);
+                    if (saved)
+                    {
+                        XMLHelper.BackupToDatabase("TaiKhoan", doc);
+                    }
+                    return saved;
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("L?i ??i m?t kh?u: " + ex.Message);
+                return false;
+            }
+        }
+    }
+}

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TaiKhoans>
+  <TaiKhoan>
+    <TaiKhoan>admin</TaiKhoan>
+    <MatKhau>202CB962AC59075B964B07152D234B70</MatKhau>
+    <Quyen>1</Quyen>
+    <MaNV>NV01</MaNV>
+  </TaiKhoan>
+  <TaiKhoan>
+    <TaiKhoan>nv01</TaiKhoan>
+    <MatKhau>202CB962AC59075B964B07152D234B70</MatKhau>
+    <Quyen>0</Quyen>
+    <MaNV>NV02</MaNV>
+  </TaiKhoan>
+  <TaiKhoan>
+    <TaiKhoan>nv02</TaiKhoan>
+    <MatKhau>202CB962AC59075B964B07152D234B70</MatKhau>
+    <Quyen>0</Quyen>
+    <MaNV>NV03</MaNV>
+  </TaiKhoan>
+</TaiKhoans>

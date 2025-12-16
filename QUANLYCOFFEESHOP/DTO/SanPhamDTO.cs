@@ -1,0 +1,34 @@
+namespace QUANLYCOFFEESHOP.DTO
+{
+    public class SanPhamDTO
+    {
+        public string MaSP { get; set; }
+        public string TenSP { get; set; }
+        public int Gia { get; set; }
+        public string MaLoai { get; set; }
+        public string TrangThai { get; set; }
+        public string HinhAnh { get; set; }
+
+        public SanPhamDTO() { }
+
+        public SanPhamDTO(string maSP, string tenSP, int gia, string maLoai, string trangThai)
+        {
+            MaSP = maSP;
+            TenSP = tenSP;
+            Gia = gia;
+            MaLoai = maLoai;
+            TrangThai = trangThai;
+            HinhAnh = "";
+        }
+
+        public SanPhamDTO(string maSP, string tenSP, int gia, string maLoai, string trangThai, string hinhAnh)
+        {
+            MaSP = maSP;
+            TenSP = tenSP;
+            Gia = gia;
+            MaLoai = maLoai;
+            TrangThai = trangThai;
+            HinhAnh = hinhAnh;
+        }
+    }
+}

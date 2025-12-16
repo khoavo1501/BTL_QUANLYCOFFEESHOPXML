@@ -1,0 +1,280 @@
+﻿namespace QUANLYCOFFEESHOP.GUI
+{
+    partial class frmHoaDon
+    {
+        private System.ComponentModel.IContainer components = null;
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        private void InitializeComponent()
+        {
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.btnXuatXML = new System.Windows.Forms.Button();
+            this.btnLamMoi = new System.Windows.Forms.Button();
+            this.btnTimKiem = new System.Windows.Forms.Button();
+            this.dtpDenNgay = new System.Windows.Forms.DateTimePicker();
+            this.dtpTuNgay = new System.Windows.Forms.DateTimePicker();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.dgvHoaDon = new System.Windows.Forms.DataGridView();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.dgvChiTiet = new System.Windows.Forms.DataGridView();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.lblThongKe = new System.Windows.Forms.Label();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvHoaDon)).BeginInit();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvChiTiet)).BeginInit();
+            this.panel2.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.Controls.Add(this.btnXuatXML);
+            this.panel1.Controls.Add(this.btnLamMoi);
+            this.panel1.Controls.Add(this.btnTimKiem);
+            this.panel1.Controls.Add(this.dtpDenNgay);
+            this.panel1.Controls.Add(this.dtpTuNgay);
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1000, 70);
+            this.panel1.TabIndex = 0;
+            // 
+            // btnXuatXML
+            // 
+            this.btnXuatXML.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(193)))), ((int)(((byte)(7)))));
+            this.btnXuatXML.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnXuatXML.ForeColor = System.Drawing.Color.White;
+            this.btnXuatXML.Location = new System.Drawing.Point(850, 20);
+            this.btnXuatXML.Name = "btnXuatXML";
+            this.btnXuatXML.Size = new System.Drawing.Size(120, 35);
+            this.btnXuatXML.TabIndex = 6;
+            this.btnXuatXML.Text = "Xuất XML";
+            this.btnXuatXML.UseVisualStyleBackColor = false;
+            this.btnXuatXML.Click += new System.EventHandler(this.btnXuatXML_Click);
+            // 
+            // btnLamMoi
+            // 
+            this.btnLamMoi.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
+            this.btnLamMoi.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnLamMoi.ForeColor = System.Drawing.Color.White;
+            this.btnLamMoi.Location = new System.Drawing.Point(720, 20);
+            this.btnLamMoi.Name = "btnLamMoi";
+            this.btnLamMoi.Size = new System.Drawing.Size(120, 35);
+            this.btnLamMoi.TabIndex = 5;
+            this.btnLamMoi.Text = "Làm mới";
+            this.btnLamMoi.UseVisualStyleBackColor = false;
+            this.btnLamMoi.Click += new System.EventHandler(this.btnLamMoi_Click);
+            // 
+            // btnTimKiem
+            // 
+            this.btnTimKiem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(126)))), ((int)(((byte)(234)))));
+            this.btnTimKiem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnTimKiem.ForeColor = System.Drawing.Color.White;
+            this.btnTimKiem.Location = new System.Drawing.Point(590, 20);
+            this.btnTimKiem.Name = "btnTimKiem";
+            this.btnTimKiem.Size = new System.Drawing.Size(120, 35);
+            this.btnTimKiem.TabIndex = 4;
+            this.btnTimKiem.Text = "Tìm kiếm";
+            this.btnTimKiem.UseVisualStyleBackColor = false;
+            this.btnTimKiem.Click += new System.EventHandler(this.btnTimKiem_Click);
+            // 
+            // dtpDenNgay
+            // 
+            this.dtpDenNgay.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.dtpDenNgay.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpDenNgay.Location = new System.Drawing.Point(400, 25);
+            this.dtpDenNgay.Name = "dtpDenNgay";
+            this.dtpDenNgay.Size = new System.Drawing.Size(150, 25);
+            this.dtpDenNgay.TabIndex = 3;
+            // 
+            // dtpTuNgay
+            // 
+            this.dtpTuNgay.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.dtpTuNgay.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpTuNgay.Location = new System.Drawing.Point(100, 25);
+            this.dtpTuNgay.Name = "dtpTuNgay";
+            this.dtpTuNgay.Size = new System.Drawing.Size(150, 25);
+            this.dtpTuNgay.TabIndex = 2;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.label2.Location = new System.Drawing.Point(320, 28);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(71, 19);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Đến ngày:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.label1.Location = new System.Drawing.Point(30, 28);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(61, 19);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Từ ngày:";
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 70);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.groupBox1);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.groupBox2);
+            this.splitContainer1.Size = new System.Drawing.Size(1000, 530);
+            this.splitContainer1.SplitterDistance = 250;
+            this.splitContainer1.TabIndex = 1;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.dgvHoaDon);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox1.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.groupBox1.Location = new System.Drawing.Point(0, 0);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(1000, 250);
+            this.groupBox1.TabIndex = 0;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Danh sách hóa đơn";
+            // 
+            // dgvHoaDon
+            // 
+            this.dgvHoaDon.AllowUserToAddRows = false;
+            this.dgvHoaDon.AllowUserToDeleteRows = false;
+            this.dgvHoaDon.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvHoaDon.BackgroundColor = System.Drawing.Color.White;
+            this.dgvHoaDon.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvHoaDon.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvHoaDon.Location = new System.Drawing.Point(3, 21);
+            this.dgvHoaDon.MultiSelect = false;
+            this.dgvHoaDon.Name = "dgvHoaDon";
+            this.dgvHoaDon.ReadOnly = true;
+            this.dgvHoaDon.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvHoaDon.Size = new System.Drawing.Size(994, 226);
+            this.dgvHoaDon.TabIndex = 0;
+            this.dgvHoaDon.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvHoaDon_CellClick);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.dgvChiTiet);
+            this.groupBox2.Controls.Add(this.panel2);
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox2.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.groupBox2.Location = new System.Drawing.Point(0, 0);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(1000, 276);
+            this.groupBox2.TabIndex = 0;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Chi tiết hóa đơn";
+            // 
+            // dgvChiTiet
+            // 
+            this.dgvChiTiet.AllowUserToAddRows = false;
+            this.dgvChiTiet.AllowUserToDeleteRows = false;
+            this.dgvChiTiet.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvChiTiet.BackgroundColor = System.Drawing.Color.White;
+            this.dgvChiTiet.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvChiTiet.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvChiTiet.Location = new System.Drawing.Point(3, 21);
+            this.dgvChiTiet.MultiSelect = false;
+            this.dgvChiTiet.Name = "dgvChiTiet";
+            this.dgvChiTiet.ReadOnly = true;
+            this.dgvChiTiet.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvChiTiet.Size = new System.Drawing.Size(994, 212);
+            this.dgvChiTiet.TabIndex = 1;
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(126)))), ((int)(((byte)(234)))));
+            this.panel2.Controls.Add(this.lblThongKe);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel2.Location = new System.Drawing.Point(3, 233);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(994, 40);
+            this.panel2.TabIndex = 0;
+            // 
+            // lblThongKe
+            // 
+            this.lblThongKe.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblThongKe.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.lblThongKe.ForeColor = System.Drawing.Color.White;
+            this.lblThongKe.Location = new System.Drawing.Point(0, 0);
+            this.lblThongKe.Name = "lblThongKe";
+            this.lblThongKe.Size = new System.Drawing.Size(994, 40);
+            this.lblThongKe.TabIndex = 0;
+            this.lblThongKe.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // frmHoaDon
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(1000, 600);
+            this.Controls.Add(this.splitContainer1);
+            this.Controls.Add(this.panel1);
+            this.Name = "frmHoaDon";
+            this.Text = "Danh sách hóa đơn";
+            this.Load += new System.EventHandler(this.frmHoaDon_Load);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvHoaDon)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvChiTiet)).EndInit();
+            this.panel2.ResumeLayout(false);
+            this.ResumeLayout(false);
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.DateTimePicker dtpTuNgay;
+        private System.Windows.Forms.DateTimePicker dtpDenNgay;
+        private System.Windows.Forms.Button btnTimKiem;
+        private System.Windows.Forms.Button btnLamMoi;
+        private System.Windows.Forms.Button btnXuatXML;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.DataGridView dgvHoaDon;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.DataGridView dgvChiTiet;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label lblThongKe;
+    }
+}

@@ -1,0 +1,346 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
+using QUANLYCOFFEESHOP.DAL;
+using QUANLYCOFFEESHOP.DTO;
+using QUANLYCOFFEESHOP.Utils;
+
+namespace QUANLYCOFFEESHOP.GUI
+{
+    public partial class frmSanPham : Form
+    {
+        private SanPhamDAL sanPhamDAL = new SanPhamDAL();
+        private LoaiSanPhamDAL loaiSanPhamDAL = new LoaiSanPhamDAL();
+        private string selectedImagePath = "";
+
+        public frmSanPham()
+        {
+            InitializeComponent();
+        }
+
+        private void frmSanPham_Load(object sender, EventArgs e)
+        {
+            LoadComboBoxLoaiSP();
+            LoadDataGridView();
+            ResetForm();
+        }
+
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+            // Tự động reload ComboBox khi form được focus
+            // Điều này đảm bảo danh sách loại SP luôn cập nhật
+            LoadComboBoxLoaiSP();
+        }
+
+        private void LoadComboBoxLoaiSP()
+        {
+            try
+            {
+                // Lưu lại giá trị đang chọn (nếu có)
+                string currentValue = cboLoaiSP.SelectedValue?.ToString();
+
+                List<LoaiSanPhamDTO> listLoai = loaiSanPhamDAL.GetAll();
+                cboLoaiSP.DataSource = null;
+                cboLoaiSP.DataSource = listLoai;
+                cboLoaiSP.DisplayMember = "TenLoai";
+                cboLoaiSP.ValueMember = "MaLoai";
+
+                // Khôi phục lại giá trị đã chọn (nếu còn tồn tại)
+                if (!string.IsNullOrEmpty(currentValue) && cboLoaiSP.Items.Count > 0)
+                {
+                    try
+                    {
+                        cboLoaiSP.SelectedValue = currentValue;
+                    }
+                    catch
+                    {
+                        // Nếu giá trị không còn tồn tại, chọn item đầu tiên
+                        if (cboLoaiSP.Items.Count > 0)
+                            cboLoaiSP.SelectedIndex = 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi load loại sản phẩm: " + ex.Message);
+            }
+        }
+
+        private void LoadDataGridView()
+        {
+            try
+            {
+                List<SanPhamDTO> list = sanPhamDAL.GetAll();
+                dgvSanPham.DataSource = list;
+
+                dgvSanPham.Columns["MaSP"].HeaderText = "Mã SP";
+                dgvSanPham.Columns["TenSP"].HeaderText = "Tên sản phẩm";
+                dgvSanPham.Columns["Gia"].HeaderText = "Giá";
+                dgvSanPham.Columns["MaLoai"].HeaderText = "Mã loại";
+                dgvSanPham.Columns["TrangThai"].HeaderText = "Trạng thái";
+                dgvSanPham.Columns["HinhAnh"].Visible = false;
+
+                dgvSanPham.Columns["Gia"].DefaultCellStyle.Format = "#,##0 đ";
+                dgvSanPham.Columns["Gia"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi load dữ liệu: " + ex.Message);
+            }
+        }
+
+        private void dgvSanPham_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dgvSanPham.Rows[e.RowIndex];
+                txtMaSP.Text = row.Cells["MaSP"].Value.ToString();
+                txtTenSP.Text = row.Cells["TenSP"].Value.ToString();
+                txtGia.Text = row.Cells["Gia"].Value.ToString();
+                cboLoaiSP.SelectedValue = row.Cells["MaLoai"].Value.ToString();
+                cboTrangThai.Text = row.Cells["TrangThai"].Value.ToString();
+                
+                selectedImagePath = row.Cells["HinhAnh"].Value?.ToString() ?? "";
+                LoadHinhAnh(selectedImagePath);
+
+                btnThem.Enabled = false;
+                btnSua.Enabled = true;
+                btnXoa.Enabled = true;
+            }
+        }
+
+        private void btnThem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!ValidateInput()) return;
+
+                SanPhamDTO sp = new SanPhamDTO
+                {
+                    MaSP = txtMaSP.Text.Trim(),
+                    TenSP = txtTenSP.Text.Trim(),
+                    Gia = int.Parse(txtGia.Text),
+                    MaLoai = cboLoaiSP.SelectedValue.ToString(),
+                    TrangThai = cboTrangThai.Text,
+                    HinhAnh = selectedImagePath
+                };
+
+                if (sanPhamDAL.Insert(sp))
+                {
+                    MessageBox.Show("Thêm sản phẩm thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadDataGridView();
+                    ResetForm();
+                }
+                else
+                {
+                    MessageBox.Show("Thêm sản phẩm thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnSua_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!ValidateInput()) return;
+
+                SanPhamDTO sp = new SanPhamDTO
+                {
+                    MaSP = txtMaSP.Text.Trim(),
+                    TenSP = txtTenSP.Text.Trim(),
+                    Gia = int.Parse(txtGia.Text),
+                    MaLoai = cboLoaiSP.SelectedValue.ToString(),
+                    TrangThai = cboTrangThai.Text,
+                    HinhAnh = selectedImagePath
+                };
+
+                if (sanPhamDAL.Update(sp))
+                {
+                    MessageBox.Show("Cập nhật sản phẩm thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadDataGridView();
+                    ResetForm();
+                }
+                else
+                {
+                    MessageBox.Show("Cập nhật sản phẩm thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnXoa_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(txtMaSP.Text))
+                {
+                    MessageBox.Show("Vui lòng chọn sản phẩm cần xóa!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                DialogResult result = MessageBox.Show("Bạn có chắc muốn xóa sản phẩm này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    if (sanPhamDAL.Delete(txtMaSP.Text))
+                    {
+                        MessageBox.Show("Xóa sản phẩm thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        LoadDataGridView();
+                        ResetForm();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Xóa sản phẩm thất bại!\nSản phẩm có thể đã được sử dụng trong hóa đơn.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnLamMoi_Click(object sender, EventArgs e)
+        {
+            LoadComboBoxLoaiSP(); // Reload danh sách loại SP
+            ResetForm();
+            LoadDataGridView();
+        }
+
+        private void btnTimKiem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string keyword = txtTimKiem.Text.Trim();
+                if (string.IsNullOrEmpty(keyword))
+                {
+                    LoadDataGridView();
+                }
+                else
+                {
+                    List<SanPhamDTO> list = sanPhamDAL.Search(keyword);
+                    dgvSanPham.DataSource = list;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tìm kiếm: " + ex.Message);
+            }
+        }
+
+        private void btnXuatXML_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (XMLHelper.ExportTableToXML("SanPham", "SanPham.xml"))
+                {
+                    MessageBox.Show("Xuất XML thành công!\nFile lưu tại: " + XMLHelper.GetBackupPath(), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Xuất XML thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private bool ValidateInput()
+        {
+            if (!Validator.IsNotEmpty(txtMaSP.Text))
+            {
+                MessageBox.Show("Vui lòng nhập mã sản phẩm!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtMaSP.Focus();
+                return false;
+            }
+
+            if (!Validator.IsNotEmpty(txtTenSP.Text))
+            {
+                MessageBox.Show("Vui lòng nhập tên sản phẩm!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtTenSP.Focus();
+                return false;
+            }
+
+            if (!Validator.IsPositiveNumber(txtGia.Text))
+            {
+                MessageBox.Show("Giá phải là số dương!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtGia.Focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        private void ResetForm()
+        {
+            txtMaSP.Clear();
+            txtTenSP.Clear();
+            txtGia.Clear();
+            txtTimKiem.Clear();
+            if (cboLoaiSP.Items.Count > 0) cboLoaiSP.SelectedIndex = 0;
+            cboTrangThai.SelectedIndex = 0;
+            
+            selectedImagePath = "";
+            picHinhAnh.Image = null;
+
+            btnThem.Enabled = true;
+            btnSua.Enabled = false;
+            btnXoa.Enabled = false;
+            txtMaSP.Focus();
+        }
+
+        private void btnChonHinh_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (OpenFileDialog openFileDialog = new OpenFileDialog())
+                {
+                    openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.bmp";
+                    openFileDialog.Title = "Chọn hình ảnh sản phẩm";
+
+                    if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        selectedImagePath = openFileDialog.FileName;
+                        LoadHinhAnh(selectedImagePath);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Đỗi lỗi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void LoadHinhAnh(string imagePath)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(imagePath) && System.IO.File.Exists(imagePath))
+                {
+                    using (var stream = new System.IO.FileStream(imagePath, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+                    {
+                        picHinhAnh.Image = System.Drawing.Image.FromStream(stream);
+                    }
+                }
+                else
+                {
+                    picHinhAnh.Image = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể tải hình ảnh: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                picHinhAnh.Image = null;
+            }
+        }
+    }
+}

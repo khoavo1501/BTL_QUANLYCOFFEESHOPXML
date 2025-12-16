@@ -171,7 +171,7 @@
             // mnuDSHoaDon
             // 
             this.mnuDSHoaDon.Name = "mnuDSHoaDon";
-            this.mnuDSHoaDon.Size = new System.Drawing.Size(172, 22);
+            this.mnuDSHoaDon.Size = new System.Drawing.Size(176, 22);
             this.mnuDSHoaDon.Text = "Danh sách hóa đơn";
             this.mnuDSHoaDon.Click += new System.EventHandler(this.mnuDSHoaDon_Click);
             // 
@@ -220,19 +220,19 @@
             // toolStripStatusUser
             // 
             this.toolStripStatusUser.Name = "toolStripStatusUser";
-            this.toolStripStatusUser.Size = new System.Drawing.Size(70, 17);
+            this.toolStripStatusUser.Size = new System.Drawing.Size(74, 17);
             this.toolStripStatusUser.Text = "Người dùng:";
             // 
             // toolStripStatusQuyen
             // 
             this.toolStripStatusQuyen.Name = "toolStripStatusQuyen";
-            this.toolStripStatusQuyen.Size = new System.Drawing.Size(44, 17);
+            this.toolStripStatusQuyen.Size = new System.Drawing.Size(45, 17);
             this.toolStripStatusQuyen.Text = "Quyền:";
             // 
             // toolStripStatusTime
             // 
             this.toolStripStatusTime.Name = "toolStripStatusTime";
-            this.toolStripStatusTime.Size = new System.Drawing.Size(1071, 17);
+            this.toolStripStatusTime.Size = new System.Drawing.Size(1066, 17);
             this.toolStripStatusTime.Spring = true;
             this.toolStripStatusTime.Text = "00:00:00";
             this.toolStripStatusTime.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -247,6 +247,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImage = global::QUANLYCOFFEESHOP.Properties.Resources.thiet_ke_quan_cafe_nho_40m2;
             this.ClientSize = new System.Drawing.Size(1200, 750);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);

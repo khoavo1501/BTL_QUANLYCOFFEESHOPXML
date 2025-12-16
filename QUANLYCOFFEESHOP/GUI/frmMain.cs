@@ -14,7 +14,24 @@ namespace QUANLYCOFFEESHOP.GUI
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            toolStripStatusUser.Text = "Ng??i dùng: " + SessionManager.CurrentEmployee.HoTen;
+            // Ki?m tra session h?p l?
+            if (SessionManager.CurrentUser == null)
+            {
+                MessageBox.Show("Phiên ??ng nh?p không h?p l?!", "L?i", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
+                return;
+            }
+
+            // Ki?m tra thông tin nhân viên
+            if (SessionManager.CurrentEmployee == null)
+            {
+                toolStripStatusUser.Text = "Ng??i dùng: " + SessionManager.CurrentUser.TaiKhoan;
+            }
+            else
+            {
+                toolStripStatusUser.Text = "Ng??i dùng: " + SessionManager.CurrentEmployee.HoTen;
+            }
+            
             toolStripStatusQuyen.Text = "Quy?n: " + (SessionManager.IsAdmin() ? "Qu?n lý" : "Nhân viên");
             
             if (!SessionManager.IsAdmin())

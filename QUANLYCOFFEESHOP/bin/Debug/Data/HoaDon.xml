@@ -91,32 +91,4 @@
     <TongTien>152000</TongTien>
     <TrangThai>Đã thanh toán</TrangThai>
   </HoaDon>
-  <HoaDon>
-    <MaHD>HD014</MaHD>
-    <MaNV>NV01</MaNV>
-    <ThoiGianLap>2025-12-16 00:26:35</ThoiGianLap>
-    <TongTien>70000</TongTien>
-    <TrangThai>Đã thanh toán</TrangThai>
-  </HoaDon>
-  <HoaDon>
-    <MaHD>HD015</MaHD>
-    <MaNV>NV01</MaNV>
-    <ThoiGianLap>2025-12-16 00:35:10</ThoiGianLap>
-    <TongTien>64000</TongTien>
-    <TrangThai>Đã thanh toán</TrangThai>
-  </HoaDon>
-  <HoaDon>
-    <MaHD>HD016</MaHD>
-    <MaNV>NV01</MaNV>
-    <ThoiGianLap>2025-12-16 02:03:02</ThoiGianLap>
-    <TongTien>55000</TongTien>
-    <TrangThai>Đã thanh toán</TrangThai>
-  </HoaDon>
-  <HoaDon>
-    <MaHD>HD017</MaHD>
-    <MaNV>NV03</MaNV>
-    <ThoiGianLap>2025-12-16 02:03:33</ThoiGianLap>
-    <TongTien>127000</TongTien>
-    <TrangThai>Đã thanh toán</TrangThai>
-  </HoaDon>
 </HoaDons>

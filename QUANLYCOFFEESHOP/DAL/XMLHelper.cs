@@ -60,47 +60,10 @@ namespace QUANLYCOFFEESHOP.DAL
 
         public static bool BackupToDatabase(string tableName, XDocument xmlDoc)
         {
-            // T?T backup t? ??ng vì d? án ?ã thu?n XML
-            // SQL Server ch? dùng ?? backup th? công
-            // N?u mu?n backup, dùng BackupAllToDatabase() v?i th? t? ?úng
+            
             return true;
             
-            /* CODE C? - ?ã t?t ?? tránh l?i Foreign Key
-            try
-            {
-                string deleteQuery = $"DELETE FROM {tableName}";
-                DatabaseHelper.ExecuteNonQuery(deleteQuery);
-
-                foreach (XElement element in xmlDoc.Root.Elements())
-                {
-                    List<string> columns = new List<string>();
-                    List<string> values = new List<string>();
-
-                    foreach (XElement field in element.Elements())
-                    {
-                        columns.Add(field.Name.LocalName);
-                        values.Add("@" + field.Name.LocalName);
-                    }
-
-                    string insertQuery = $"INSERT INTO {tableName} ({string.Join(", ", columns)}) VALUES ({string.Join(", ", values)})";
-                    
-                    List<System.Data.SqlClient.SqlParameter> parameters = new List<System.Data.SqlClient.SqlParameter>();
-                    foreach (XElement field in element.Elements())
-                    {
-                        parameters.Add(new System.Data.SqlClient.SqlParameter("@" + field.Name.LocalName, field.Value));
-                    }
-
-                    DatabaseHelper.ExecuteNonQuery(insertQuery, parameters.ToArray());
-                }
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                System.Windows.Forms.MessageBox.Show("L?i backup vào database: " + ex.Message);
-                return false;
-            }
-            */
+            
         }
 
         public static bool RestoreFromDatabase(string tableName, string fileName, string rootName)

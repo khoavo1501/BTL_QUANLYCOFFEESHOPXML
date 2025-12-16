@@ -25,9 +25,4 @@
     <TenLoai>Bánh</TenLoai>
     <MoTa>Bánh ngọt và snack</MoTa>
   </LoaiSanPham>
-  <LoaiSanPham>
-    <MaLoai>L06</MaLoai>
-    <TenLoai>Trà sữa</TenLoai>
-    <MoTa></MoTa>
-  </LoaiSanPham>
 </LoaiSanPhams>

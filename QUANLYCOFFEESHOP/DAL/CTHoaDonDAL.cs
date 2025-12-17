@@ -39,7 +39,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i ??c chi ti?t h�a ??n: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lỗi đọc chi tiết hóa đơn: " + ex.Message);
             }
 
             return list;
@@ -70,7 +70,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i th�m chi ti?t h�a ??n: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lỗi thêm chi tiết hóa đơn: " + ex.Message);
                 return false;
             }
         }
@@ -117,7 +117,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i l?y chi ti?t h�a ??n: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lỗi lấy chi tiết hóa đơn: " + ex.Message);
                 return new DataTable();
             }
         }

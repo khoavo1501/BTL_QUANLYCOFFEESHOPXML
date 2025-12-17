@@ -36,6 +36,7 @@
             this.mnuDSHoaDon = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuBaoCaoMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuBaoCao = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuXuatBaoCaoHTML = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuThongTinMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuThongTin = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -178,7 +179,8 @@
             // mnuBaoCaoMenu
             // 
             this.mnuBaoCaoMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuBaoCao});
+            this.mnuBaoCao,
+            this.mnuXuatBaoCaoHTML});
             this.mnuBaoCaoMenu.Name = "mnuBaoCaoMenu";
             this.mnuBaoCaoMenu.Size = new System.Drawing.Size(61, 20);
             this.mnuBaoCaoMenu.Text = "Báo cáo";
@@ -189,6 +191,13 @@
             this.mnuBaoCao.Size = new System.Drawing.Size(182, 22);
             this.mnuBaoCao.Text = "Thống kê doanh thu";
             this.mnuBaoCao.Click += new System.EventHandler(this.mnuBaoCao_Click);
+            // 
+            // mnuXuatBaoCaoHTML
+            // 
+            this.mnuXuatBaoCaoHTML.Name = "mnuXuatBaoCaoHTML";
+            this.mnuXuatBaoCaoHTML.Size = new System.Drawing.Size(182, 22);
+            this.mnuXuatBaoCaoHTML.Text = "Xuất báo cáo HTML";
+            this.mnuXuatBaoCaoHTML.Click += new System.EventHandler(this.mnuXuatBaoCaoHTML_Click);
             // 
             // mnuThongTinMenu
             // 
@@ -248,6 +257,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::QUANLYCOFFEESHOP.Properties.Resources.thiet_ke_quan_cafe_nho_40m2;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1200, 750);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
@@ -287,6 +297,7 @@
         private System.Windows.Forms.ToolStripMenuItem mnuDSHoaDon;
         private System.Windows.Forms.ToolStripMenuItem mnuBaoCaoMenu;
         private System.Windows.Forms.ToolStripMenuItem mnuBaoCao;
+        private System.Windows.Forms.ToolStripMenuItem mnuXuatBaoCaoHTML;
         private System.Windows.Forms.ToolStripMenuItem mnuThongTinMenu;
         private System.Windows.Forms.ToolStripMenuItem mnuThongTin;
         private System.Windows.Forms.StatusStrip statusStrip1;

@@ -33,7 +33,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i ??c d? li?u lo?i s?n ph?m: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lỗi đọc dữ liệu loại sản phẩm: " + ex.Message);
             }
 
             return list;
@@ -60,7 +60,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i t�m lo?i s?n ph?m: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lỗi tìm loại sản phẩm: " + ex.Message);
             }
 
             return null;
@@ -74,7 +74,7 @@ namespace QUANLYCOFFEESHOP.DAL
 
                 if (doc.Root.Elements(ELEMENT_NAME).Any(x => x.Element("MaLoai")?.Value == loaiSanPham.MaLoai))
                 {
-                    System.Windows.Forms.MessageBox.Show("M� lo?i ?� t?n t?i!");
+                    System.Windows.Forms.MessageBox.Show("Mã loại đã tồn tại!");
                     return false;
                 }
 
@@ -95,7 +95,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i th�m lo?i s?n ph?m: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lỗi thêm loại sản phẩm: " + ex.Message);
                 return false;
             }
         }
@@ -126,7 +126,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i c?p nh?t lo?i s?n ph?m: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lỗi cập nhật loại sản phẩm: " + ex.Message);
                 return false;
             }
         }
@@ -156,7 +156,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i x�a lo?i s?n ph?m: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lỗi xóa loại sản phẩm: " + ex.Message);
                 return false;
             }
         }

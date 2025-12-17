@@ -36,7 +36,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i ??c d? li?u s?n ph?m: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lỗi đọc dữ liệu sản phẩm: " + ex.Message);
             }
 
             return list;
@@ -66,7 +66,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i t�m s?n ph?m: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lỗi tìm sản phẩm: " + ex.Message);
             }
 
             return null;
@@ -80,7 +80,7 @@ namespace QUANLYCOFFEESHOP.DAL
 
                 if (doc.Root.Elements(ELEMENT_NAME).Any(x => x.Element("MaSP")?.Value == sanPham.MaSP))
                 {
-                    System.Windows.Forms.MessageBox.Show("M� s?n ph?m ?� t?n t?i!");
+                    System.Windows.Forms.MessageBox.Show("Mã sản phẩm đã tồn tại!");
                     return false;
                 }
 
@@ -104,7 +104,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i th�m s?n ph?m: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lỗi thêm sản phẩm: " + ex.Message);
                 return false;
             }
         }
@@ -142,7 +142,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i c?p nh?t s?n ph?m: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lỗi cập nhật sản phẩm: " + ex.Message);
                 return false;
             }
         }
@@ -172,7 +172,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i x�a s?n ph?m: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lỗi xóa sản phẩm: " + ex.Message);
                 return false;
             }
         }
@@ -205,7 +205,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i t�m ki?m s?n ph?m: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lỗi tìm kiếm sản phẩm: " + ex.Message);
             }
 
             return list;
@@ -221,7 +221,7 @@ namespace QUANLYCOFFEESHOP.DAL
 
                 var elements = doc.Root.Elements(ELEMENT_NAME)
                     .Where(x => x.Element("MaLoai")?.Value == maLoai && 
-                               x.Element("TrangThai")?.Value == "C�n b�n");
+                               x.Element("TrangThai")?.Value == "Còn bán");
 
                 foreach (XElement element in elements)
                 {
@@ -239,7 +239,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i l?y s?n ph?m theo lo?i: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lỗi lấy sản phẩm theo loại: " + ex.Message);
             }
 
             return list;
@@ -254,7 +254,7 @@ namespace QUANLYCOFFEESHOP.DAL
                 XDocument doc = XMLHelper.LoadOrCreateXML(FILE_NAME, ROOT_NAME);
 
                 var elements = doc.Root.Elements(ELEMENT_NAME)
-                    .Where(x => x.Element("TrangThai")?.Value == "C�n b�n");
+                    .Where(x => x.Element("TrangThai")?.Value == "Còn bán");
 
                 foreach (XElement element in elements)
                 {
@@ -272,7 +272,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i l?y s?n ph?m c�n b�n: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lỗi lấy sản phẩm còn bán: " + ex.Message);
             }
 
             return list;

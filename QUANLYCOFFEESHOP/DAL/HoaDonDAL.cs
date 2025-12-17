@@ -38,7 +38,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i ??c d? li?u hóa ??n: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lá»—i Ä‘á»c dá»¯ liá»‡u hÃ³a Ä‘Æ¡n: " + ex.Message);
             }
 
             return list;
@@ -67,7 +67,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i tìm hóa ??n: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lá»—i tÃ¬m hÃ³a Ä‘Æ¡n: " + ex.Message);
             }
 
             return null;
@@ -79,14 +79,14 @@ namespace QUANLYCOFFEESHOP.DAL
             {
                 XDocument doc = XMLHelper.LoadOrCreateXML(FILE_NAME, ROOT_NAME);
 
-                // Không c?n ki?m tra trùng vì mã ???c t?o t? ??ng
-                // Nh?ng v?n ki?m tra ?? an toàn
+                // Khï¿½ng c?n ki?m tra trï¿½ng vï¿½ mï¿½ ???c t?o t? ??ng
+                // Nh?ng v?n ki?m tra ?? an toï¿½n
                 var existingElement = doc.Root.Elements(ELEMENT_NAME)
                     .FirstOrDefault(x => x.Element("MaHD")?.Value == hoaDon.MaHD);
                 
                 if (existingElement != null)
                 {
-                    // N?u trùng, t?o l?i mã m?i
+                    // N?u trï¿½ng, t?o l?i mï¿½ m?i
                     hoaDon.MaHD = GenerateNewMaHD();
                 }
 
@@ -109,7 +109,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i thêm hóa ??n: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lá»—i thÃªm hÃ³a Ä‘Æ¡n: " + ex.Message);
                 return false;
             }
         }
@@ -145,7 +145,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i l?y hóa ??n theo ngày: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lá»—i láº¥y hÃ³a Ä‘Æ¡n theo ngÃ y: " + ex.Message);
             }
 
             return list;
@@ -164,7 +164,7 @@ namespace QUANLYCOFFEESHOP.DAL
                     return "HD001";
                 }
 
-                // Tìm s? l?n nh?t
+                // Tï¿½m s? l?n nh?t
                 int maxNumber = 0;
                 foreach (var element in elements)
                 {
@@ -182,15 +182,12 @@ namespace QUANLYCOFFEESHOP.DAL
                     }
                 }
 
-                // T?o mã m?i
                 int newNumber = maxNumber + 1;
                 return "HD" + newNumber.ToString("D3");
             }
             catch (Exception ex)
             {
-                // Log l?i ?? debug
-                System.Windows.Forms.MessageBox.Show("L?i t?o mã hóa ??n: " + ex.Message);
-                // T?o mã d?a trên timestamp ?? tránh trùng
+                System.Windows.Forms.MessageBox.Show("Lá»—i táº¡o mÃ£ hÃ³a Ä‘Æ¡n: " + ex.Message);
                 return "HD" + DateTime.Now.ToString("HHmmss");
             }
         }

@@ -13,6 +13,7 @@ namespace QUANLYCOFFEESHOP.DAL
     public class XMLHelper
     {
         private static string xmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data");
+        private static string backupPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Constants.BACKUP_FOLDER);
 
         public static void EnsureDataFolderExists()
         {
@@ -22,10 +23,24 @@ namespace QUANLYCOFFEESHOP.DAL
             }
         }
 
+        public static void EnsureBackupFolderExists()
+        {
+            if (!Directory.Exists(backupPath))
+            {
+                Directory.CreateDirectory(backupPath);
+            }
+        }
+
         public static string GetXMLFilePath(string fileName)
         {
             EnsureDataFolderExists();
             return Path.Combine(xmlPath, fileName);
+        }
+
+        public static string GetBackupFilePath(string fileName)
+        {
+            EnsureBackupFolderExists();
+            return Path.Combine(backupPath, fileName);
         }
 
         public static XDocument LoadOrCreateXML(string fileName, string rootName)
@@ -53,17 +68,48 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i l?u XML: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lỗi lưu XML: " + ex.Message);
                 return false;
             }
         }
 
         public static bool BackupToDatabase(string tableName, XDocument xmlDoc)
         {
-            
-            return true;
-            
-            
+            try
+            {
+                // Xóa dữ liệu cũ trong bảng
+                DatabaseHelper.ExecuteNonQuery($"DELETE FROM {tableName}");
+
+                // Insert dữ liệu từ XML vào database
+                foreach (XElement element in xmlDoc.Root.Elements())
+                {
+                    List<string> columns = new List<string>();
+                    List<string> values = new List<string>();
+
+                    foreach (XElement field in element.Elements())
+                    {
+                        columns.Add(field.Name.LocalName);
+                        values.Add("@" + field.Name.LocalName);
+                    }
+
+                    string insertQuery = $"INSERT INTO {tableName} ({string.Join(", ", columns)}) VALUES ({string.Join(", ", values)})";
+                    
+                    List<SqlParameter> parameters = new List<SqlParameter>();
+                    foreach (XElement field in element.Elements())
+                    {
+                        parameters.Add(new SqlParameter("@" + field.Name.LocalName, field.Value ?? ""));
+                    }
+
+                    DatabaseHelper.ExecuteNonQuery(insertQuery, parameters.ToArray());
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi backup to database: " + ex.Message);
+                return false;
+            }
         }
 
         public static bool RestoreFromDatabase(string tableName, string fileName, string rootName)
@@ -92,7 +138,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i restore t? database: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lỗi restore từ database: " + ex.Message);
                 return false;
             }
         }
@@ -101,7 +147,7 @@ namespace QUANLYCOFFEESHOP.DAL
         {
             try
             {
-                // X�A THEO TH? T? NG??C (Child tr??c, Parent sau)
+                // XÓA THEO THỨ TỰ NGƯỢC (Child trước, Parent sau)
                 DatabaseHelper.ExecuteNonQuery("DELETE FROM CTHoaDon");
                 DatabaseHelper.ExecuteNonQuery("DELETE FROM HoaDon");
                 DatabaseHelper.ExecuteNonQuery("DELETE FROM TaiKhoan");
@@ -110,7 +156,7 @@ namespace QUANLYCOFFEESHOP.DAL
                 DatabaseHelper.ExecuteNonQuery("DELETE FROM NhanVien");
                 DatabaseHelper.ExecuteNonQuery("IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'ThongTinCuaHang') DELETE FROM ThongTinCuaHang");
 
-                // TH�M THEO TH? T? ?�NG (Parent tr??c, Child sau)
+                // THÊM THEO THỨ TỰ ĐÚNG (Parent trước, Child sau)
                 BackupTableToDatabaseDirect("LoaiSanPham", "LoaiSanPham.xml");
                 BackupTableToDatabaseDirect("NhanVien", "NhanVien.xml");
                 BackupTableToDatabaseDirect("TaiKhoan", "TaiKhoan.xml");
@@ -123,7 +169,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i backup t?t c?: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lỗi backup tất cả: " + ex.Message);
                 return false;
             }
         }
@@ -164,7 +210,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                // B? qua l?i n?u b?ng kh�ng t?n t?i
+                // Bỏ qua lỗi nếu bảng không tồn tại
                 return false;
             }
         }
@@ -201,7 +247,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i restore t?t c?: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lỗi restore tất cả: " + ex.Message);
                 return false;
             }
         }
@@ -213,7 +259,146 @@ namespace QUANLYCOFFEESHOP.DAL
 
         public static string GetBackupPath()
         {
-            return xmlPath;
+            return backupPath;
+        }
+
+        public static bool BackupXMLFile(string fileName)
+        {
+            try
+            {
+                string sourceFile = GetXMLFilePath(fileName);
+                string backupFile = GetBackupFilePath(fileName);
+
+                if (File.Exists(sourceFile))
+                {
+                    // Copy file từ Data sang Backup với timestamp
+                    string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+                    string backupFileName = Path.GetFileNameWithoutExtension(fileName) + "_" + timestamp + Path.GetExtension(fileName);
+                    string timestampBackupFile = Path.Combine(backupPath, backupFileName);
+                    
+                    File.Copy(sourceFile, timestampBackupFile, true);
+                    
+                    // Copy file gốc (không timestamp) để dễ restore
+                    File.Copy(sourceFile, backupFile, true);
+                    
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi backup XML file: " + ex.Message);
+                return false;
+            }
+        }
+
+        public static bool BackupAllXMLFiles()
+        {
+            try
+            {
+                EnsureBackupFolderExists();
+                
+                string[] xmlFiles = {
+                    "LoaiSanPham.xml",
+                    "SanPham.xml", 
+                    "NhanVien.xml",
+                    "TaiKhoan.xml",
+                    "HoaDon.xml",
+                    "CTHoaDon.xml",
+                    "ThongTinCuaHang.xml"
+                };
+
+                foreach (string fileName in xmlFiles)
+                {
+                    BackupXMLFile(fileName);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi backup tất cả XML files: " + ex.Message);
+                return false;
+            }
+        }
+
+        public static bool FullBackupProcess()
+        {
+            try
+            {
+                // Bước 1: Backup XML files từ Data sang Backup folder
+                if (!BackupAllXMLFiles())
+                {
+                    System.Windows.Forms.MessageBox.Show("Lỗi backup XML files!");
+                    return false;
+                }
+
+                // Bước 2: Backup dữ liệu lên Database
+                if (!BackupAllToDatabase())
+                {
+                    System.Windows.Forms.MessageBox.Show("Lỗi backup to database!");
+                    return false;
+                }
+
+                System.Windows.Forms.MessageBox.Show("Backup hoàn tất!\n- XML files đã được backup vào thư mục Backup\n- Dữ liệu đã được đồng bộ lên Database", 
+                    "Thông báo", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                
+                return true;
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi quá trình backup: " + ex.Message);
+                return false;
+            }
+        }
+
+        public static bool RestoreXMLFile(string fileName)
+        {
+            try
+            {
+                string backupFile = GetBackupFilePath(fileName);
+                string dataFile = GetXMLFilePath(fileName);
+
+                if (File.Exists(backupFile))
+                {
+                    File.Copy(backupFile, dataFile, true);
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi restore XML file: " + ex.Message);
+                return false;
+            }
+        }
+
+        public static bool RestoreAllXMLFiles()
+        {
+            try
+            {
+                string[] xmlFiles = {
+                    "LoaiSanPham.xml",
+                    "SanPham.xml",
+                    "NhanVien.xml", 
+                    "TaiKhoan.xml",
+                    "HoaDon.xml",
+                    "CTHoaDon.xml",
+                    "ThongTinCuaHang.xml"
+                };
+
+                foreach (string fileName in xmlFiles)
+                {
+                    RestoreXMLFile(fileName);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Lỗi restore tất cả XML files: " + ex.Message);
+                return false;
+            }
         }
 
         public static bool ExportTableToXML(string tableName, string fileName)
@@ -242,7 +427,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i xu?t XML: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lỗi xuất XML: " + ex.Message);
                 return false;
             }
         }

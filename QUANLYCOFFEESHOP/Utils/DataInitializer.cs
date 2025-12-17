@@ -18,7 +18,7 @@ namespace QUANLYCOFFEESHOP.Utils
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i kh?i t?o d? li?u: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lỗi khởi tạo dữ liệu: " + ex.Message);
             }
         }
 
@@ -26,11 +26,11 @@ namespace QUANLYCOFFEESHOP.Utils
         {
             NhanVienDAL nvDAL = new NhanVienDAL();
             
-            // Ki?m tra xem ?� c� nh�n vi�n ch?a
+            // Kiểm tra xem đã có nhân viên chưa
             if (nvDAL.GetAll().Count > 0)
                 return;
 
-            // T?o nh�n vi�n Admin
+            // Tạo nhân viên Admin
             NhanVienDTO admin = new NhanVienDTO
             {
                 MaNV = "ADMIN",
@@ -38,33 +38,33 @@ namespace QUANLYCOFFEESHOP.Utils
                 GioiTinh = "Nam",
                 NgaySinh = new DateTime(1990, 1, 1),
                 SDT = "0123456789",
-                DiaChi = "H? th?ng",
+                DiaChi = "Hệ thống",
                 NgayVaoLam = DateTime.Now
             };
             nvDAL.Insert(admin);
 
-            // T?o nh�n vi�n 1
+            // Tạo nhân viên 1
             NhanVienDTO nv1 = new NhanVienDTO
             {
                 MaNV = "NV01",
-                HoTen = "Nguy?n V?n A",
+                HoTen = "Nguyễn Văn A",
                 GioiTinh = "Nam",
                 NgaySinh = new DateTime(1995, 5, 10),
                 SDT = "0905123456",
-                DiaChi = "?� N?ng",
+                DiaChi = "Đà Nẵng",
                 NgayVaoLam = new DateTime(2024, 1, 1)
             };
             nvDAL.Insert(nv1);
 
-            // T?o nh�n vi�n 2
+            // Tạo nhân viên 2
             NhanVienDTO nv2 = new NhanVienDTO
             {
                 MaNV = "NV02",
-                HoTen = "Tr?n Th? B",
-                GioiTinh = "N?",
+                HoTen = "Trần Thị B",
+                GioiTinh = "Nữ",
                 NgaySinh = new DateTime(1998, 8, 20),
                 SDT = "0907654321",
-                DiaChi = "?� N?ng",
+                DiaChi = "Đà Nẵng",
                 NgayVaoLam = new DateTime(2024, 2, 1)
             };
             nvDAL.Insert(nv2);
@@ -74,14 +74,14 @@ namespace QUANLYCOFFEESHOP.Utils
         {
             TaiKhoanDAL tkDAL = new TaiKhoanDAL();
             
-            // Ki?m tra xem ?� c� t�i kho?n ch?a
+            // Kiểm tra xem đã có tài khoản chưa
             if (tkDAL.GetAll().Count > 0)
                 return;
 
-            // M?t kh?u "123" ?� m� h�a MD5
+            // Mật khẩu "123" đã mã hóa MD5
             string hashedPassword = Helper.MD5Hash("123");
 
-            // T?o t�i kho?n Admin
+            // Tạo tài khoản Admin
             TaiKhoanDTO admin = new TaiKhoanDTO
             {
                 TaiKhoan = "admin",
@@ -91,7 +91,7 @@ namespace QUANLYCOFFEESHOP.Utils
             };
             tkDAL.Insert(admin);
 
-            // T?o t�i kho?n nh�n vi�n 1
+            // Tạo tài khoản nhân viên 1
             TaiKhoanDTO tk1 = new TaiKhoanDTO
             {
                 TaiKhoan = "nv01",
@@ -101,7 +101,7 @@ namespace QUANLYCOFFEESHOP.Utils
             };
             tkDAL.Insert(tk1);
 
-            // T?o t�i kho?n nh�n vi�n 2
+            // Tạo tài khoản nhân viên 2
             TaiKhoanDTO tk2 = new TaiKhoanDTO
             {
                 TaiKhoan = "nv02",
@@ -116,43 +116,43 @@ namespace QUANLYCOFFEESHOP.Utils
         {
             LoaiSanPhamDAL loaiDAL = new LoaiSanPhamDAL();
             
-            // Ki?m tra xem ?� c� lo?i s?n ph?m ch?a
+            // Kiểm tra xem đã có loại sản phẩm chưa
             if (loaiDAL.GetAll().Count > 0)
                 return;
 
-            // T?o lo?i C� ph�
+            // Tạo loại Cà phê
             LoaiSanPhamDTO loai1 = new LoaiSanPhamDTO
             {
                 MaLoai = "L01",
-                TenLoai = "C� ph�",
-                MoTa = "C�c lo?i c� ph� truy?n th?ng"
+                TenLoai = "Cà phê",
+                MoTa = "Các loại cà phê truyền thống"
             };
             loaiDAL.Insert(loai1);
 
-            // T?o lo?i Tr� s?a
+            // Tạo loại Trà sữa
             LoaiSanPhamDTO loai2 = new LoaiSanPhamDTO
             {
                 MaLoai = "L02",
-                TenLoai = "Tr� s?a",
-                MoTa = "Tr� s?a c�c lo?i"
+                TenLoai = "Trà sữa",
+                MoTa = "Trà sữa các loại"
             };
             loaiDAL.Insert(loai2);
 
-            // T?o lo?i N??c �p
+            // Tạo loại Nước ép
             LoaiSanPhamDTO loai3 = new LoaiSanPhamDTO
             {
                 MaLoai = "L03",
-                TenLoai = "N??c �p",
-                MoTa = "N??c �p tr�i c�y t??i"
+                TenLoai = "Nước ép",
+                MoTa = "Nước ép trái cây tươi"
             };
             loaiDAL.Insert(loai3);
 
-            // T?o lo?i Sinh t?
+            // Tạo loại Sinh tố
             LoaiSanPhamDTO loai4 = new LoaiSanPhamDTO
             {
                 MaLoai = "L04",
-                TenLoai = "Sinh t?",
-                MoTa = "Sinh t? c�c lo?i"
+                TenLoai = "Sinh tố",
+                MoTa = "Sinh tố các loại"
             };
             loaiDAL.Insert(loai4);
         }
@@ -161,15 +161,15 @@ namespace QUANLYCOFFEESHOP.Utils
         {
             SanPhamDAL spDAL = new SanPhamDAL();
             
-            // Ki?m tra xem ?� c� s?n ph?m ch?a
+            // Kiểm tra xem đã có sản phẩm chưa
             if (spDAL.GetAll().Count > 0)
                 return;
 
-            // C� ph�
+            // Cà phê
             spDAL.Insert(new SanPhamDTO
             {
                 MaSP = "SP01",
-                TenSP = "C� ph� ?en",
+                TenSP = "Cà phê đen",
                 Gia = 25000,
                 MaLoai = "L01",
                 TrangThai = Constants.TRANGTHAI_CONBAN
@@ -178,7 +178,7 @@ namespace QUANLYCOFFEESHOP.Utils
             spDAL.Insert(new SanPhamDTO
             {
                 MaSP = "SP02",
-                TenSP = "C� ph� s?a",
+                TenSP = "Cà phê sữa",
                 Gia = 30000,
                 MaLoai = "L01",
                 TrangThai = Constants.TRANGTHAI_CONBAN
@@ -187,7 +187,7 @@ namespace QUANLYCOFFEESHOP.Utils
             spDAL.Insert(new SanPhamDTO
             {
                 MaSP = "SP03",
-                TenSP = "B?c x?u",
+                TenSP = "Bạc xỉu",
                 Gia = 28000,
                 MaLoai = "L01",
                 TrangThai = Constants.TRANGTHAI_CONBAN
@@ -202,11 +202,11 @@ namespace QUANLYCOFFEESHOP.Utils
                 TrangThai = Constants.TRANGTHAI_CONBAN
             });
 
-            // Tr� s?a
+            // Trà sữa
             spDAL.Insert(new SanPhamDTO
             {
                 MaSP = "SP05",
-                TenSP = "Tr� s?a truy?n th?ng",
+                TenSP = "Trà sữa truyền thống",
                 Gia = 35000,
                 MaLoai = "L02",
                 TrangThai = Constants.TRANGTHAI_CONBAN
@@ -215,7 +215,7 @@ namespace QUANLYCOFFEESHOP.Utils
             spDAL.Insert(new SanPhamDTO
             {
                 MaSP = "SP06",
-                TenSP = "Tr� s?a tr�n ch�u",
+                TenSP = "Trà sữa trân châu",
                 Gia = 40000,
                 MaLoai = "L02",
                 TrangThai = Constants.TRANGTHAI_CONBAN
@@ -224,17 +224,17 @@ namespace QUANLYCOFFEESHOP.Utils
             spDAL.Insert(new SanPhamDTO
             {
                 MaSP = "SP07",
-                TenSP = "Tr� s?a matcha",
+                TenSP = "Trà sữa matcha",
                 Gia = 42000,
                 MaLoai = "L02",
                 TrangThai = Constants.TRANGTHAI_CONBAN
             });
 
-            // N??c �p
+            // Nước ép
             spDAL.Insert(new SanPhamDTO
             {
                 MaSP = "SP08",
-                TenSP = "N??c �p cam",
+                TenSP = "Nước ép cam",
                 Gia = 30000,
                 MaLoai = "L03",
                 TrangThai = Constants.TRANGTHAI_CONBAN
@@ -243,7 +243,7 @@ namespace QUANLYCOFFEESHOP.Utils
             spDAL.Insert(new SanPhamDTO
             {
                 MaSP = "SP09",
-                TenSP = "N??c �p d?a h?u",
+                TenSP = "Nước ép dưa hấu",
                 Gia = 25000,
                 MaLoai = "L03",
                 TrangThai = Constants.TRANGTHAI_CONBAN
@@ -252,17 +252,17 @@ namespace QUANLYCOFFEESHOP.Utils
             spDAL.Insert(new SanPhamDTO
             {
                 MaSP = "SP10",
-                TenSP = "N??c �p t�o",
+                TenSP = "Nước ép táo",
                 Gia = 35000,
                 MaLoai = "L03",
                 TrangThai = Constants.TRANGTHAI_CONBAN
             });
 
-            // Sinh t?
+            // Sinh tố
             spDAL.Insert(new SanPhamDTO
             {
                 MaSP = "SP11",
-                TenSP = "Sinh t? b?",
+                TenSP = "Sinh tố bơ",
                 Gia = 40000,
                 MaLoai = "L04",
                 TrangThai = Constants.TRANGTHAI_CONBAN
@@ -271,7 +271,7 @@ namespace QUANLYCOFFEESHOP.Utils
             spDAL.Insert(new SanPhamDTO
             {
                 MaSP = "SP12",
-                TenSP = "Sinh t? d�u",
+                TenSP = "Sinh tố dâu",
                 Gia = 38000,
                 MaLoai = "L04",
                 TrangThai = Constants.TRANGTHAI_CONBAN
@@ -280,7 +280,7 @@ namespace QUANLYCOFFEESHOP.Utils
             spDAL.Insert(new SanPhamDTO
             {
                 MaSP = "SP13",
-                TenSP = "Sinh t? xo�i",
+                TenSP = "Sinh tố xoài",
                 Gia = 38000,
                 MaLoai = "L04",
                 TrangThai = Constants.TRANGTHAI_CONBAN

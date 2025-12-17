@@ -76,6 +76,12 @@ namespace QUANLYCOFFEESHOP.GUI
             OpenChildForm(new frmBaoCao());
         }
 
+        private void mnuXuatBaoCaoHTML_Click(object sender, EventArgs e)
+        {
+            frmXuatBaoCaoHTML frm = new frmXuatBaoCaoHTML();
+            frm.ShowDialog();
+        }
+
         private void mnuDoiMatKhau_Click(object sender, EventArgs e)
         {
             frmDoiMatKhau frm = new frmDoiMatKhau();

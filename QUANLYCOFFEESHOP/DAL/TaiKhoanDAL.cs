@@ -62,7 +62,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i ??c d? li?u t�i kho?n: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lỗi đọc dữ liệu tài khoản: " + ex.Message);
             }
 
             return list;
@@ -76,7 +76,7 @@ namespace QUANLYCOFFEESHOP.DAL
 
                 if (doc.Root.Elements(ELEMENT_NAME).Any(x => x.Element("TaiKhoan")?.Value == taiKhoan.TaiKhoan))
                 {
-                    System.Windows.Forms.MessageBox.Show("T�i kho?n ?� t?n t?i!");
+                    System.Windows.Forms.MessageBox.Show("Tài khoản đã tồn tại!");
                     return false;
                 }
 
@@ -98,7 +98,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i th�m t�i kho?n: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lỗi thêm tài khoản: " + ex.Message);
                 return false;
             }
         }
@@ -130,7 +130,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i c?p nh?t t�i kho?n: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lỗi cập nhật tài khoản: " + ex.Message);
                 return false;
             }
         }
@@ -160,7 +160,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i x�a t�i kho?n: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lỗi xóa tài khoản: " + ex.Message);
                 return false;
             }
         }
@@ -190,7 +190,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i ??i m?t kh?u: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lỗi đổi mật khẩu: " + ex.Message);
                 return false;
             }
         }

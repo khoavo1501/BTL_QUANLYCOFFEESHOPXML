@@ -36,7 +36,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i ??c d? li?u nhân viên: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lá»—i Ä‘á»c dá»¯ liá»‡u nhÃ¢n viÃªn: " + ex.Message);
             }
 
             return list;
@@ -67,7 +67,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i tìm nhân viên: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lá»—i tÃ¬m nhÃ¢n viÃªn: " + ex.Message);
             }
 
             return null;
@@ -81,7 +81,7 @@ namespace QUANLYCOFFEESHOP.DAL
 
                 if (doc.Root.Elements(ELEMENT_NAME).Any(x => x.Element("MaNV")?.Value == nhanVien.MaNV))
                 {
-                    System.Windows.Forms.MessageBox.Show("Mã nhân viên ?ã t?n t?i!");
+                    System.Windows.Forms.MessageBox.Show("MÃ£ nhÃ¢n viÃªn Ä‘Ã£ tá»“n táº¡i!");
                     return false;
                 }
 
@@ -106,7 +106,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i thêm nhân viên: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lá»—i thÃªm nhÃ¢n viÃªn: " + ex.Message);
                 return false;
             }
         }
@@ -141,7 +141,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i c?p nh?t nhân viên: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lá»—i cáº­p nháº­t nhÃ¢n viÃªn: " + ex.Message);
                 return false;
             }
         }
@@ -171,7 +171,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i xóa nhân viên: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lá»—i xÃ³a nhÃ¢n viÃªn: " + ex.Message);
                 return false;
             }
         }
@@ -206,7 +206,7 @@ namespace QUANLYCOFFEESHOP.DAL
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("L?i tìm ki?m nhân viên: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Lá»—i tÃ¬m kiáº¿m nhÃ¢n viÃªn: " + ex.Message);
             }
 
             return list;
